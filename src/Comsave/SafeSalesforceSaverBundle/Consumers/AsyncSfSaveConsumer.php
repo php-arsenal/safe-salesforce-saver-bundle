@@ -1,6 +1,6 @@
 <?php
 
-namespace Comsave\Webservice\Core\CoreBundle\Consumer;
+namespace Comsave\SafeSalesforceSaver\Consumers;
 
 use LogicItLab\Salesforce\MapperBundle\Mapper;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -8,7 +8,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * Class AsyncSfSaveConsumer
- * @package Comsave\Webservice\Core\CoreBundle\Consumer
+ * @package Comsave\SafeSalesforceSaver\Consumers
  */
 class AsyncSfSaveConsumer implements ConsumerInterface
 {

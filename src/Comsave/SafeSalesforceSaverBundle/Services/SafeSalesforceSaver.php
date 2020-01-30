@@ -1,7 +1,10 @@
 <?php
 
+namespace Comsave\SafeSalesforceSaver\Services;
+
 /**
  * Class SafeSalesforceSaver
+ * @package Comsave\SafeSalesforceSaver\Services
  */
 class SafeSalesforceSaver {
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaverBundle\Producer;
+namespace Comsave\SafeSalesforceSaver\Producers;
 
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
 
 /**
  * Class SfSaverProducer
- * @package Comsave\SafeSalesforceSaverBundle\Producer
+ * @package Comsave\SafeSalesforceSaver\Producers
  */
 class SfSaverProducer extends Producer
 {
