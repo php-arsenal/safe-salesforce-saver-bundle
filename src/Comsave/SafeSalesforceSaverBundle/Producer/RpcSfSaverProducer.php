@@ -5,7 +5,6 @@ namespace Comsave\SafeSalesforceSaver\Producer;
 use Comsave\SafeSalesforceSaver\Exception\TimeoutException;
 use Comsave\SafeSalesforceSaver\Exception\UnidentifiedMessageException;
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class RpcSalesforceSaverServer
@@ -14,17 +13,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RpcSfSaverProducer extends Producer
 {
     /**
-     * @var ContainerInterface
+     * @var RpcClient
      */
-    private $container;
-    
+    private $rpcClient;
+
     /**
-     * @param ContainerInterface $container
+     * @param RpcClient $rpcClient
      * @codeCoverageIgnore
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(RpcClient $rpcClient)
     {
-        $this->container = $container;
+        $this->rpcClient = $rpcClient;
     }
 
     /**
@@ -35,15 +34,12 @@ class RpcSfSaverProducer extends Producer
      */
     public function call($model)
     {
-        $requestId = 'safe_salesforce_saver' . crc32(microtime());
+        $requestId = 'sss_' . crc32(microtime());
 
-        /** @var RpcClient $rpcClient */
-        $rpcClient = $this->container->get('old_sound_rabbit_mq.parallel_rpc');
-
-        $rpcClient->addRequest(serialize($model), 'order_create_server', $requestId, null, 50);
+        $this->rpcClient->addRequest(serialize($model), 'safe_salesforce_saver_server', $requestId, null, 50);
 
         try {
-            $reply = $rpcClient->getReplies();
+            $reply = $this->rpcClient->getReplies();
         } catch (AMQPTimeoutException $e) {
             throw new TimeoutException(serialize($model));
         }
