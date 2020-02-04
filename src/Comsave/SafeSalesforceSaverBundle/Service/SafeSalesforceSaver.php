@@ -4,13 +4,14 @@ namespace Comsave\SafeSalesforceSaver\Service;
 
 use Comsave\SafeSalesforceSaver\Producer\AsyncSfSaverProducer;
 use Comsave\SafeSalesforceSaver\Producer\RpcSfSaverProducer;
+use Traversable;
 
 /**
  * Class SafeSalesforceSaver
  * @package Comsave\SafeSalesforceSaver\Service
  */
-class SafeSalesforceSaver {
-
+class SafeSalesforceSaver
+{
     /** @var AsyncSfSaverProducer */
     private $aSyncSaver;
 
@@ -29,22 +30,44 @@ class SafeSalesforceSaver {
     }
 
     /**
-     * Use this function to save your model to Salesforce without waiting for a response.
-     * @param $model
+     * Use this function to save your model(s) to Salesforce without waiting for a response.
+     * @param $models
      */
-    public function ASyncSave($model): void
+    public function ASyncSave($models): void
     {
-        $this->aSyncSaver->publish(serialize($model));
+        if (is_array($models)) {
+            $modelsArray = $models;
+        } elseif ($models instanceof Traversable) {
+            $modelsArray = [];
+            foreach ($models as $m) {
+                $modelsArray[] = $m;
+            }
+        } else {
+            $modelsArray = array($models);
+        }
+
+        $this->aSyncSaver->publish(serialize($modelsArray));
     }
 
     /**
      * Use this function to save your model to Salesforce and wait for the response.
-     * @param $model
+     * @param $models
      * @return string
      * @throws \Exception
      */
-    public function Save($model): string
+    public function Save($models): string
     {
-        return $this->rpcSaver->call($model);
+        if (is_array($models)) {
+            $modelsArray = $models;
+        } elseif ($models instanceof Traversable) {
+            $modelsArray = [];
+            foreach ($models as $m) {
+                $modelsArray[] = $m;
+            }
+        } else {
+            $modelsArray = array($models);
+        }
+
+        return $this->rpcSaver->call($modelsArray);
     }
 }

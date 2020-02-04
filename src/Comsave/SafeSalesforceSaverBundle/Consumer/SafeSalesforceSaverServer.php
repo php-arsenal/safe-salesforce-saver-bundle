@@ -2,39 +2,33 @@
 
 namespace Comsave\SafeSalesforceSaver\Consumer;
 
-use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use LogicItLab\Salesforce\MapperBundle\Mapper;
-use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use Psr\Log\LoggerInterface;
 
 /**
- * Class AsyncSfSaveConsumer
+ * Class SafeSalesforceSaverServer
  * @package Comsave\SafeSalesforceSaver\Consumer
  */
-class AsyncSfSaveConsumer implements ConsumerInterface
+class SafeSalesforceSaverServer
 {
-    /* @var Mapper */
+    /**  @var LoggerInterface */
+    private $logger;
+
+    /** @var Mapper */
     private $mapper;
 
-    /** @var MappedBulkSaver */
-    private $mappedBulkSaver;
-
     /**
+     * @param LoggerInterface $logger
      * @param Mapper $mapper
-     * @param MappedBulkSaver $mappedBulkSaver
      * @codeCoverageIgnore
      */
-    public function __construct(Mapper $mapper, MappedBulkSaver $mappedBulkSaver)
+    public function __construct(LoggerInterface $logger, Mapper $mapper)
     {
+        $this->logger = $logger;
         $this->mapper = $mapper;
-        $this->mappedBulkSaver = $mappedBulkSaver;
     }
 
-    /**
-     * @param AMQPMessage $message
-     * @return mixed|void
-     * @throws \Exception
-     */
     public function execute(AMQPMessage $message)
     {
         $payload = unserialize($message->body);
@@ -46,5 +40,13 @@ class AsyncSfSaveConsumer implements ConsumerInterface
             }
             $this->mappedBulkSaver->flush();
         }
+
+        $models = unserialize($message->body);
+
+        $this->mapper->save($lead);
+
+        return json_encode([
+            'leadId' => $lead->getId()
+        ]);
     }
 }

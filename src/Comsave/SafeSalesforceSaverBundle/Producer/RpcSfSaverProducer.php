@@ -27,25 +27,24 @@ class RpcSfSaverProducer extends Producer
     }
 
     /**
-     * @param $model
+     * @param $models
      * @return mixed
      * @throws TimeoutException
      * @throws UnidentifiedMessageException
      */
-    public function call($model)
+    public function call($models)
     {
         $requestId = 'sss_' . crc32(microtime());
-
-        $this->rpcClient->addRequest(serialize($model), 'safe_salesforce_saver_server', $requestId, null, 50);
+        $this->rpcClient->addRequest(serialize($models), 'safe_salesforce_saver_server', $requestId, null, 50);
 
         try {
             $reply = $this->rpcClient->getReplies();
         } catch (AMQPTimeoutException $e) {
-            throw new TimeoutException(serialize($model));
+            throw new TimeoutException(serialize($models));
         }
 
         if (!isset($reply[$requestId])) {
-            throw new UnidentifiedMessageException($requestId, serialize($model));
+            throw new UnidentifiedMessageException($requestId, serialize($models));
         }
 
         return $reply[$requestId];

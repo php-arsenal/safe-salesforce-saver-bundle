@@ -8,7 +8,7 @@ namespace Comsave\SafeSalesforceSaver\Exception;
  */
 class UnidentifiedMessageException extends SSSException
 {
-    protected $message = 'No valid response was received from the server.';
+    protected $message;
 
     /**
      * @param string $requestId
@@ -17,6 +17,6 @@ class UnidentifiedMessageException extends SSSException
      */
     public function __construct(string $requestId, string $model)
     {
-        $this->message .= sprintf(' The requestId was \'%s\'. The serialized model that was being saved was: %s', $requestId, $model);
+        $this->message .= sprintf('No valid response was received from the rpc server. The requestId was \'%s\'. Serialized message of the failed call: %s', $requestId, $model);
     }
 }
