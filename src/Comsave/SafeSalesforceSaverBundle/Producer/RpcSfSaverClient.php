@@ -4,13 +4,14 @@ namespace Comsave\SafeSalesforceSaver\Producer;
 
 use Comsave\SafeSalesforceSaver\Exception\TimeoutException;
 use Comsave\SafeSalesforceSaver\Exception\UnidentifiedMessageException;
-use OldSound\RabbitMqBundle\RabbitMq\Producer;
+use OldSound\RabbitMqBundle\RabbitMq\RpcClient;
+use PhpAmqpLib\Exception\AMQPTimeoutException;
 
 /**
  * Class RpcSalesforceSaverServer
  * @package Comsave\SafeSalesforceSaver\Producer
  */
-class RpcSfSaverProducer extends Producer
+class RpcSfSaverClient
 {
     /**
      * @var RpcClient

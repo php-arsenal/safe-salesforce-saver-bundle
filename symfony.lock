@@ -62,6 +62,22 @@
     "php": {
         "version": "7.2"
     },
+    "php-amqplib/php-amqplib": {
+        "version": "v2.11.0"
+    },
+    "php-amqplib/rabbitmq-bundle": {
+        "version": "1.12",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.12",
+            "ref": "ce3ca2e4577270c4f518539aa6b9e878998fcfef"
+        },
+        "files": [
+            "config/packages/old_sound_rabbit_mq.yaml",
+            "src/Consumer/.gitignore"
+        ]
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
     },
@@ -70,6 +86,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.23"
     },
     "phpspec/prophecy": {
         "version": "v1.10.2"
@@ -107,9 +126,6 @@
         "version": "1.0.1"
     },
     "psr/container": {
-        "version": "1.0.0"
-    },
-    "psr/event-dispatcher": {
         "version": "1.0.0"
     },
     "psr/log": {
@@ -184,6 +200,9 @@
             "bin/console",
             "config/bootstrap.php"
         ]
+    },
+    "symfony/debug": {
+        "version": "v4.4.4"
     },
     "symfony/dependency-injection": {
         "version": "v5.0.3"

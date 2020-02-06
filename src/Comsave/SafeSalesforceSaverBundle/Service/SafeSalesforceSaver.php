@@ -3,7 +3,7 @@
 namespace Comsave\SafeSalesforceSaver\Service;
 
 use Comsave\SafeSalesforceSaver\Producer\AsyncSfSaverProducer;
-use Comsave\SafeSalesforceSaver\Producer\RpcSfSaverProducer;
+use Comsave\SafeSalesforceSaver\Producer\RpcSfSaverClient;
 use Traversable;
 
 /**
@@ -15,15 +15,15 @@ class SafeSalesforceSaver
     /** @var AsyncSfSaverProducer */
     private $aSyncSaver;
 
-    /** @var RpcSfSaverProducer */
+    /** @var RpcSfSaverClient */
     private $rpcSaver;
 
     /**
      * @param AsyncSfSaverProducer $aSyncSaver
-     * @param RpcSfSaverProducer $rpcSaver
+     * @param RpcSfSaverClient $rpcSaver
      * @codeCoverageIgnore
      */
-    public function __construct(AsyncSfSaverProducer $aSyncSaver, RpcSfSaverProducer $rpcSaver)
+    public function __construct(AsyncSfSaverProducer $aSyncSaver, RpcSfSaverClient $rpcSaver)
     {
         $this->aSyncSaver = $aSyncSaver;
         $this->rpcSaver = $rpcSaver;
