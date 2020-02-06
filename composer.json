@@ -1,4 +1,5 @@
 {
+    "name": "comsave/safesalesforcesaver",
     "type": "project",
     "license": "proprietary",
     "require": {
