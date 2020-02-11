@@ -20,3 +20,7 @@
 
 # General
 .DS_Store
+
+#composer
+composer.lock
+symfony.lock
