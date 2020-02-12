@@ -4,6 +4,16 @@
     "description": "Allows you to save your objects to Salesforce safely",
     "homepage": "https://github.com/comsave/safe-salesforce-saver-bundle",
     "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Comsave\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Comsave\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "php": ">=7.2",
         "ext-ctype": "*",
@@ -18,47 +28,23 @@
         "symfony/yaml": "^3.4|^4.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8"
+        "phpunit/php-code-coverage": "^6.0",
+        "phpunit/phpunit": "^7.0"
+    },
+    "scripts": {
+        "run-tests": "vendor/bin/phpunit -c phpunit.xml.dist --no-coverage",
+        "run-coverage": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover tests/_output/coverage.xml",
+        "run-coverage-text": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-text=tests/_output/coverage.txt && cat tests/_output/coverage.txt"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false
+        }
     },
     "config": {
         "preferred-install": {
             "*": "dist"
         },
         "sort-packages": true
-    },
-    "autoload": {
-        "psr-4": {
-            "Comsave\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Comsave\\Tests\\": "tests/"
-        }
-    },
-    "replace": {
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php71": "*",
-        "symfony/polyfill-php70": "*",
-        "symfony/polyfill-php56": "*"
-    },
-    "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false
-        }
     }
 }

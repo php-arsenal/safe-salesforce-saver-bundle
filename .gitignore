@@ -24,3 +24,6 @@
 #composer
 composer.lock
 symfony.lock
+
+tests/_output
+!tests/_output/.gitignore
