@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\UNit\Comsave\SafeSalesforceSaver\Services;
+namespace Comsave\Tests\UNit\Comsave\SafeSalesforceSaver\Services;
 
 use Comsave\SafeSalesforceSaver\Services\SafeSalesforceSaver;
 use PHPUnit\Framework\TestCase;

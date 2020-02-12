@@ -1,6 +1,6 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaver\Service;
+namespace Comsave\SafeSalesforceSaver\Services;
 
 use Comsave\SafeSalesforceSaver\Producer\AsyncSfSaverProducer;
 use Comsave\SafeSalesforceSaver\Producer\RpcSfSaverClient;

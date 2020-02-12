@@ -27,16 +27,15 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Comsave\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Comsave\\Tests\\": "tests/"
         }
     },
     "replace": {
-        "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-php72": "*",

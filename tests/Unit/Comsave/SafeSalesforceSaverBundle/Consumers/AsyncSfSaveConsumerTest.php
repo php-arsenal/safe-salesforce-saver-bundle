@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Unit\Comsave\SafeSalesforceSaver\Consumers;
+namespace Comsave\Tests\Unit\Comsave\SafeSalesforceSaver\Consumers;
 
 use Comsave\SafeSalesforceSaver\Consumers\AsyncSfSaveConsumer;
 use LogicItLab\Salesforce\MapperBundle\Mapper;
