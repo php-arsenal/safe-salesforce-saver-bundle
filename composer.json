@@ -1,19 +1,20 @@
 {
     "name": "comsave/safesalesforcesaver",
-    "type": "project",
-    "license": "proprietary",
+    "type": "symfony-bundle",
+    "description": "Allows you to save your objects to Salesforce safely",
+    "license": "MIT",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "comsave/salesforce-mapper-bundle": "3.5.0",
         "php-amqplib/rabbitmq-bundle": "^1.14",
-        "symfony/config": "3.4.*",
-        "symfony/console": "3.4.*",
-        "symfony/dotenv": "3.4.*",
+        "symfony/config": "^3.4|^4.3",
+        "symfony/console": "^3.4|^4.3",
+        "symfony/dotenv": "^3.4|^4.3",
         "symfony/flex": "^1.3.1",
-        "symfony/framework-bundle": "3.4.*",
-        "symfony/yaml": "3.4.*"
+        "symfony/framework-bundle": "^3.4|^4.3",
+        "symfony/yaml": "^3.4|^4.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8"
@@ -55,13 +56,9 @@
             "@auto-scripts"
         ]
     },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
-            "require": "3.4.*"
+            "allow-contrib": false
         }
     }
 }
