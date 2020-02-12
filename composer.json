@@ -2,6 +2,7 @@
     "name": "comsave/safe-salesforce-saver-bundle",
     "type": "symfony-bundle",
     "description": "Allows you to save your objects to Salesforce safely",
+    "homepage": "https://github.com/comsave/safe-salesforce-saver-bundle",
     "license": "MIT",
     "require": {
         "php": ">=7.2",
