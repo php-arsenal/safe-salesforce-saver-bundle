@@ -18,7 +18,7 @@ env:
 matrix:
   include:
       - env: SYMFONY_VERSION=^3.4
-      - env: SYMFONY_VERSION=^4.4
+      - env: SYMFONY_VERSION=^4.3
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
