@@ -1,6 +1,6 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaver\Exception;
+namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
 /**
  * Class TimeoutException

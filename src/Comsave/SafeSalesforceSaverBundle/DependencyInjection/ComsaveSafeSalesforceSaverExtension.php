@@ -1,6 +1,6 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaver\DependencyInjection;
+namespace Comsave\SafeSalesforceSaverBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

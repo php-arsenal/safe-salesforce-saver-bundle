@@ -1,6 +1,6 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaver\Producer;
+namespace Comsave\SafeSalesforceSaverBundle\Producer;
 
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
 

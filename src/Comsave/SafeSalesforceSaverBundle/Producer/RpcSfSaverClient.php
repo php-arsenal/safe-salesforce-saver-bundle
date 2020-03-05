@@ -1,9 +1,9 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaver\Producer;
+namespace Comsave\SafeSalesforceSaverBundle\Producer;
 
-use Comsave\SafeSalesforceSaver\Exception\TimeoutException;
-use Comsave\SafeSalesforceSaver\Exception\UnidentifiedMessageException;
+use Comsave\SafeSalesforceSaverBundle\Exception\TimeoutException;
+use Comsave\SafeSalesforceSaverBundle\Exception\UnidentifiedMessageException;
 use OldSound\RabbitMqBundle\RabbitMq\RpcClient;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 

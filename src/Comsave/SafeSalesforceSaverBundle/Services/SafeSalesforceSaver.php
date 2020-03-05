@@ -1,9 +1,9 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaver\Services;
+namespace Comsave\SafeSalesforceSaverBundle\Services;
 
-use Comsave\SafeSalesforceSaver\Producer\AsyncSfSaverProducer;
-use Comsave\SafeSalesforceSaver\Producer\RpcSfSaverClient;
+use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
+use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
 use Traversable;
 
 /**

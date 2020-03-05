@@ -1,6 +1,6 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaver\Consumers;
+namespace Comsave\SafeSalesforceSaverBundle\Consumers;
 
 use LogicItLab\Salesforce\MapperBundle\Mapper;
 use PhpAmqpLib\Message\AMQPMessage;
