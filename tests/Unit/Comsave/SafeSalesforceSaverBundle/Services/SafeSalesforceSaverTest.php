@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit\Comsave\SafeSalesforceSaver\Services;
+namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Services;
 
-use Comsave\SafeSalesforceSaver\Producer\AsyncSfSaverProducer;
-use Comsave\SafeSalesforceSaver\Producer\RpcSfSaverClient;
-use Comsave\SafeSalesforceSaver\Services\SafeSalesforceSaver;
+use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
+use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
+use Comsave\SafeSalesforceSaverBundle\Services\SafeSalesforceSaver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

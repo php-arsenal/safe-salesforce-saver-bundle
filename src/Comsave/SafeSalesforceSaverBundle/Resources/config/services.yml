@@ -6,6 +6,7 @@ services:
 
     Comsave\SafeSalesforceSaverBundle\:
         resource: '../../*'
+        exclude: '../../{DependencyInjection,Exception}'
 
     OldSound\RabbitMqBundle\RabbitMq\RpcClient:
         autowire: true

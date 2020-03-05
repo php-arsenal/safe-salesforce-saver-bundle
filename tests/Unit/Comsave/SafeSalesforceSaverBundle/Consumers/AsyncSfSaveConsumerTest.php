@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Comsave\SafeSalesforceSaver\Consumers;
+namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers;
 
-use Comsave\SafeSalesforceSaver\Consumers\AsyncSfSaveConsumer;
+use Comsave\SafeSalesforceSaverBundle\Consumers\AsyncSfSaveConsumer;
 use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use LogicItLab\Salesforce\MapperBundle\Mapper;
 use PHPUnit\Framework\MockObject\MockObject;
