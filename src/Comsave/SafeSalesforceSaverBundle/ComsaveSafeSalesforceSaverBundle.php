@@ -1,6 +1,6 @@
 <?php
 
-namespace Comsave\SafeSalesforceSaverBundle;
+namespace Comsave\SafeSalesforceSaver;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
