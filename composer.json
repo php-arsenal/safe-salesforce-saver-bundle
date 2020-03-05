@@ -6,12 +6,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Comsave\\": "src/"
+            "Comsave\\": "src/Comsave"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Comsave\\Tests\\": "tests/"
+            "Tests\\": "tests/"
         }
     },
     "require": {

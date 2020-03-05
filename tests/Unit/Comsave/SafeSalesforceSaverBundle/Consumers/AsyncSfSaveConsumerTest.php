@@ -1,8 +1,9 @@
 <?php
 
-namespace Comsave\Tests\Unit\Comsave\SafeSalesforceSaver\Consumers;
+namespace Tests\Unit\Comsave\SafeSalesforceSaver\Consumers;
 
 use Comsave\SafeSalesforceSaver\Consumers\AsyncSfSaveConsumer;
+use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use LogicItLab\Salesforce\MapperBundle\Mapper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -20,10 +21,14 @@ class AsyncSfSaveConsumerTest extends TestCase
     /* @var Mapper|MockObject */
     private $mapper;
 
+    /** @var MappedBulkSaver|MockObject */
+    private $mappedBulkSaver;
+
     public function setUp(): void
     {
         $this->mapper = $this->createMock(Mapper::class);
-        $this->asyncSfSaveConsumer = new AsyncSfSaveConsumer($this->mapper);
+        $this->mappedBulkSaver = $this->createMock(MappedBulkSaver::class);
+        $this->asyncSfSaveConsumer = new AsyncSfSaveConsumer($this->mapper, $this->mappedBulkSaver);
     }
 
     /**
@@ -31,6 +36,7 @@ class AsyncSfSaveConsumerTest extends TestCase
      */
     public function testExecute()
     {
-        $this->asyncSfSaveConsumer->execute();
+        $message = [];
+        $this->asyncSfSaveConsumer->execute(serialize($message));
     }
 }
