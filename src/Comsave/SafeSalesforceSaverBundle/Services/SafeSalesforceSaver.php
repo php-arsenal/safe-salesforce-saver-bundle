@@ -8,7 +8,7 @@ use Traversable;
 
 /**
  * Class SafeSalesforceSaver
- * @package Comsave\SafeSalesforceSaver\Service
+ * @package Comsave\SafeSalesforceSaver\Services
  */
 class SafeSalesforceSaver
 {
@@ -33,20 +33,9 @@ class SafeSalesforceSaver
      * Use this function to save your model(s) to Salesforce without waiting for a response.
      * @param $models
      */
-    public function ASyncSave($models): void
+    public function aSyncSave($models): void
     {
-        if (is_array($models)) {
-            $modelsArray = $models;
-        } elseif ($models instanceof Traversable) {
-            $modelsArray = [];
-            foreach ($models as $m) {
-                $modelsArray[] = $m;
-            }
-        } else {
-            $modelsArray = array($models);
-        }
-
-        $this->aSyncSaver->publish(serialize($modelsArray));
+        $this->aSyncSaver->publish(serialize($this->turnModelsIntoArray($models)));
     }
 
     /**
@@ -55,7 +44,16 @@ class SafeSalesforceSaver
      * @return string
      * @throws \Exception
      */
-    public function Save($models): string
+    public function save($models): string
+    {
+        return $this->rpcSaver->call(serialize($this->turnModelsIntoArray($models)));
+    }
+
+    /**
+     * @param $models
+     * @return array
+     */
+    private function turnModelsIntoArray($models)
     {
         if (is_array($models)) {
             $modelsArray = $models;
@@ -68,6 +66,6 @@ class SafeSalesforceSaver
             $modelsArray = array($models);
         }
 
-        return $this->rpcSaver->call($modelsArray);
+        return $modelsArray;
     }
 }

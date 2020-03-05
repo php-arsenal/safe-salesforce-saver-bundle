@@ -4,7 +4,7 @@ namespace Comsave\SafeSalesforceSaver\Consumers;
 
 use LogicItLab\Salesforce\MapperBundle\Mapper;
 use PhpAmqpLib\Message\AMQPMessage;
-use Psr\Log\LoggerInterface;
+use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 
 /**
  * Class SafeSalesforceSaverServer
@@ -12,26 +12,25 @@ use Psr\Log\LoggerInterface;
  */
 class SafeSalesforceSaverServer
 {
-    /**  @var LoggerInterface */
-    private $logger;
-
     /** @var Mapper */
     private $mapper;
 
+    /** @var MappedBulkSaver */
+    private $mappedBulkSaver;
+
     /**
-     * @param LoggerInterface $logger
      * @param Mapper $mapper
+     * @param MappedBulkSaver $mappedBulkSaver
      * @codeCoverageIgnore
      */
-    public function __construct(LoggerInterface $logger, Mapper $mapper)
+    public function __construct(Mapper $mapper, MappedBulkSaver $mappedBulkSaver)
     {
-        $this->logger = $logger;
         $this->mapper = $mapper;
+        $this->mappedBulkSaver = $mappedBulkSaver;
     }
 
     public function execute(AMQPMessage $message)
     {
-        var_dump('FIX ME');die;
         $payload = unserialize($message->body);
         if (count($payload) == 1) {
             $this->mapper->save($payload[0]);
@@ -41,13 +40,5 @@ class SafeSalesforceSaverServer
             }
             $this->mappedBulkSaver->flush();
         }
-
-        $models = unserialize($message->body);
-
-        $this->mapper->save($lead);
-
-        return json_encode([
-            'leadId' => $lead->getId()
-        ]);
     }
 }
