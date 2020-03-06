@@ -4,7 +4,7 @@ namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
 /**
  * Class TimeoutException
- * @package Comsave\SafeSalesforceSaver\Exception
+ * @package Comsave\SafeSalesforceSaverBundle\Exception
  */
 class TimeoutException extends SSSException
 {

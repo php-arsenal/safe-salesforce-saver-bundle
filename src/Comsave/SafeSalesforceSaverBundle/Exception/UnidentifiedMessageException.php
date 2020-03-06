@@ -4,7 +4,7 @@ namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
 /**
  * Class UnidentifiedMessageException
- * @package Comsave\SafeSalesforceSaver\Exception
+ * @package Comsave\SafeSalesforceSaverBundle\Exception
  */
 class UnidentifiedMessageException extends SSSException
 {

@@ -8,7 +8,7 @@ use Traversable;
 
 /**
  * Class SafeSalesforceSaver
- * @package Comsave\SafeSalesforceSaver\Services
+ * @package Comsave\SafeSalesforceSaverBundle\Services
  */
 class SafeSalesforceSaver
 {
@@ -53,7 +53,7 @@ class SafeSalesforceSaver
      * @param $models
      * @return array
      */
-    private function turnModelsIntoArray($models)
+    private function turnModelsIntoArray($models): array
     {
         if (is_array($models)) {
             $modelsArray = $models;

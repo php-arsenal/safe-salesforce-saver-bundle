@@ -4,7 +4,7 @@ namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
 /**
  * Class SSSException
- * @package Comsave\SafeSalesforceSaver\Exception
+ * @package Comsave\SafeSalesforceSaverBundle\Exception
  */
 class SSSException extends \Exception
 {

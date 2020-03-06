@@ -9,7 +9,7 @@ use PhpAmqpLib\Exception\AMQPTimeoutException;
 
 /**
  * Class RpcSalesforceSaverServer
- * @package Comsave\SafeSalesforceSaver\Producer
+ * @package Comsave\SafeSalesforceSaverBundle\Producer
  */
 class RpcSfSaverClient
 {
@@ -33,7 +33,7 @@ class RpcSfSaverClient
      * @throws TimeoutException
      * @throws UnidentifiedMessageException
      */
-    public function call($models)
+    public function call($models): string
     {
         $requestId = 'sss_' . crc32(microtime());
         $this->rpcClient->addRequest(serialize($models), 'safe_salesforce_saver_server', $requestId, null, 50);

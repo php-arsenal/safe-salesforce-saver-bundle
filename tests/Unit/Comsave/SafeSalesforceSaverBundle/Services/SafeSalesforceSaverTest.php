@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class SafeSalesforceSaverTest
- * @package tests\Unit\Comsave\SafeSalesforceSaver\Services
- * @coversDefaultClass \Comsave\SafeSalesforceSaver\Services\SafeSalesforceSaver
+ * @package tests\Unit\Comsave\SafeSalesforceSaverBundle\Services
+ * @coversDefaultClass \Comsave\SafeSalesforceSaverBundle\Services\SafeSalesforceSaver
  */
 class SafeSalesforceSaverTest extends TestCase
 {

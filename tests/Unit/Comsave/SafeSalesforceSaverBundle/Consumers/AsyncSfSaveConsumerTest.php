@@ -5,13 +5,14 @@ namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers;
 use Comsave\SafeSalesforceSaverBundle\Consumers\AsyncSfSaveConsumer;
 use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use LogicItLab\Salesforce\MapperBundle\Mapper;
+use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class AsyncSfSaveConsumerTest
- * @package tests\Unit\Comsave\SafeSalesforceSaver\Consumers
- * @coversDefaultClass \Comsave\SafeSalesforceSaver\Consumers\AsyncSfSaveConsumer
+ * @package tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers
+ * @coversDefaultClass \Comsave\SafeSalesforceSaverBundle\Consumers\AsyncSfSaveConsumer
  */
 class AsyncSfSaveConsumerTest extends TestCase
 {
@@ -19,16 +20,16 @@ class AsyncSfSaveConsumerTest extends TestCase
     private $asyncSfSaveConsumer;
 
     /* @var Mapper|MockObject */
-    private $mapper;
+    private $mapperMock;
 
     /** @var MappedBulkSaver|MockObject */
-    private $mappedBulkSaver;
+    private $mappedBulkSaverMock;
 
     public function setUp(): void
     {
-        $this->mapper = $this->createMock(Mapper::class);
-        $this->mappedBulkSaver = $this->createMock(MappedBulkSaver::class);
-        $this->asyncSfSaveConsumer = new AsyncSfSaveConsumer($this->mapper, $this->mappedBulkSaver);
+        $this->mapperMock = $this->createMock(Mapper::class);
+        $this->mappedBulkSaverMock = $this->createMock(MappedBulkSaver::class);
+        $this->asyncSfSaveConsumer = new AsyncSfSaveConsumer($this->mapperMock, $this->mappedBulkSaverMock);
     }
 
     /**
@@ -36,7 +37,32 @@ class AsyncSfSaveConsumerTest extends TestCase
      */
     public function testExecute()
     {
-        $message = [];
-        $this->asyncSfSaveConsumer->execute(serialize($message));
+        $body = new \stdClass();
+        $message = new AMQPMessage(serialize($body));
+
+        $this->mapperMock->expects($this->once())
+            ->method('save')
+            ->with($body);
+
+        $this->asyncSfSaveConsumer->execute($message);
+    }
+
+    /**
+     * @covers ::execute()
+     */
+    public function testExecuteMultiple()
+    {
+        $object = new \stdClass();
+        $object2 = new \stdClass();
+        $message = new AMQPMessage(serialize([$object, $object2]));
+
+        $this->mappedBulkSaverMock->expects($this->exactly(2))
+            ->method('save')
+            ->withConsecutive($object, $object2);
+
+        $this->mappedBulkSaverMock->expects($this->once())
+            ->method('flush');
+
+        $this->asyncSfSaveConsumer->execute($message);
     }
 }

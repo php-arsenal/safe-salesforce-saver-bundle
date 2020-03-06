@@ -9,7 +9,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * Class AsyncSfSaveConsumer
- * @package Comsave\SafeSalesforceSaver\Consumer
+ * @package Comsave\SafeSalesforceSaverBundle\Consumer
  */
 class AsyncSfSaveConsumer implements ConsumerInterface
 {
@@ -35,11 +35,12 @@ class AsyncSfSaveConsumer implements ConsumerInterface
      * @return mixed|void
      * @throws \Exception
      */
-    public function execute(AMQPMessage $message)
+    public function execute(AMQPMessage $message): void
     {
         $payload = unserialize($message->body);
-        if (count($payload) == 1) {
-            $this->mapper->save($payload[0]);
+
+        if (!is_iterable($payload)) {
+            $this->mapper->save($payload);
         } else {
             foreach ($payload as $model) {
                 $this->mappedBulkSaver->save($model);
