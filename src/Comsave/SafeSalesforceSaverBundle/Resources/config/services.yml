@@ -10,3 +10,5 @@ services:
 
     OldSound\RabbitMqBundle\RabbitMq\RpcClient:
         autowire: true
+
+    Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer: '@old_sound_rabbit_mq.sss_async_processor_producer'

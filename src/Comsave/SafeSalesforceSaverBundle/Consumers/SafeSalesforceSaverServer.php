@@ -35,12 +35,16 @@ class SafeSalesforceSaverServer
         $this->mappedBulkSaver = $mappedBulkSaver;
     }
 
-    public function execute(AMQPMessage $message)
+    /**
+     * @param AMQPMessage $message
+     * @return string
+     */
+    public function execute(AMQPMessage $message): string
     {
         $payload = unserialize($message->body);
 
-        if (!is_iterable($payload)) {
-            $this->mapper->save($payload);
+        if (count($payload) == 1) {
+            $this->mapper->save($payload[0]);
             $returnValue = serialize($payload);
         } else {
             foreach ($payload as $model) {

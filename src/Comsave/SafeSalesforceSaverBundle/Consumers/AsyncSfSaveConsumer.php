@@ -39,8 +39,8 @@ class AsyncSfSaveConsumer implements ConsumerInterface
     {
         $payload = unserialize($message->body);
 
-        if (!is_iterable($payload)) {
-            $this->mapper->save($payload);
+        if (count($payload) == 1) {
+            $this->mapper->save($payload[0]);
         } else {
             foreach ($payload as $model) {
                 $this->mappedBulkSaver->save($model);
