@@ -63,7 +63,7 @@ class SafeSalesforceSaver
                 $modelsArray[] = $m;
             }
         } else {
-            $modelsArray = array($models);
+            $modelsArray = [$models];
         }
 
         return $modelsArray;

@@ -8,7 +8,7 @@ use OldSound\RabbitMqBundle\RabbitMq\RpcClient;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 
 /**
- * Class RpcSalesforceSaverServer
+ * Class RpcSfSaverClient
  * @package Comsave\SafeSalesforceSaverBundle\Producer
  */
 class RpcSfSaverClient
@@ -36,16 +36,16 @@ class RpcSfSaverClient
     public function call($models): string
     {
         $requestId = 'sss_' . crc32(microtime());
-        $this->rpcClient->addRequest(serialize($models), 'safe_salesforce_saver_server', $requestId, null, 50);
+        $this->rpcClient->addRequest($models, 'safe_salesforce_saver_server', $requestId, null, 50);
 
         try {
             $reply = $this->rpcClient->getReplies();
         } catch (AMQPTimeoutException $e) {
-            throw new TimeoutException(serialize($models));
+            throw new TimeoutException($models);
         }
 
         if (!isset($reply[$requestId])) {
-            throw new UnidentifiedMessageException($requestId, serialize($models));
+            throw new UnidentifiedMessageException($requestId, $models);
         }
 
         return $reply[$requestId];
