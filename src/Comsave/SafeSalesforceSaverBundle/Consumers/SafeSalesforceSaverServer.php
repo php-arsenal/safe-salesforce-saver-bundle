@@ -37,21 +37,21 @@ class SafeSalesforceSaverServer
 
     /**
      * @param AMQPMessage $message
-     * @return string
+     * @return mixed
      */
-    public function execute(AMQPMessage $message): string
+    public function execute(AMQPMessage $message): mixed
     {
         $payload = unserialize($message->body);
 
         if (count($payload) == 1) {
             $this->mapper->save($payload[0]);
-            $returnValue = serialize($payload);
+            $returnValue = $payload[0];
         } else {
             foreach ($payload as $model) {
                 $this->mappedBulkSaver->save($model);
             }
 
-            $returnValue = serialize($this->mappedBulkSaver->flush());
+            $returnValue = $this->mappedBulkSaver->flush();
         }
 
         return $returnValue;
