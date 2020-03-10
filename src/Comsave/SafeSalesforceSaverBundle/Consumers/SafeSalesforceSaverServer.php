@@ -39,7 +39,7 @@ class SafeSalesforceSaverServer
      * @param AMQPMessage $message
      * @return mixed
      */
-    public function execute(AMQPMessage $message): mixed
+    public function execute(AMQPMessage $message)
     {
         $payload = unserialize($message->body);
 

@@ -42,7 +42,7 @@ class SafeSalesforceSaver
     /**
      * Use this function to save your model(s) to Salesforce and wait for the response.
      * @param $models mixed You can either pass a single object or an array of objects.
-     * @return string If you passed a single object this function will return a serialized version of your object. If you passed multiple objects this function will return an array of all the inserted IDs
+     * @return string If you passed a single object this function will return a serialized version of your object. If you passed multiple objects this function will return a serialized array with your saved objects
      * @throws \Exception
      */
     public function save($models): string
@@ -50,12 +50,17 @@ class SafeSalesforceSaver
         $result = unserialize($this->rpcSaver->call(serialize($this->turnModelsIntoArray($models))));
 
         if (is_countable($models) && count($models) != 1) {
-            foreach($models as $key => $model) {
-                $model->setId($result[$key]->getId());
+            $iterator = 0;
+            foreach($models as $model) {
+                if(!$model->getId()) {
+                    $model->setId($result['created'][$iterator]->getId());
+                    $iterator++;
+                }
             }
+            return serialize($models);
         }
 
-        return serialize($models);
+        return serialize($result);
     }
 
     /**
