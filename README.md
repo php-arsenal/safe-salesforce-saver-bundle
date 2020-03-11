@@ -1,5 +1,5 @@
 # SafeSalesforceSaver
-Allows you to save your objects to Salesforce safely.
+Allows you to save your objects to Salesforce safely by using RabbitMQ as queueing system. 
 
 [![Release](https://img.shields.io/github/v/release/comsave/safe-salesforce-saver-bundle)](https://github.com/comsave/safe-salesforce-saver-bundle/releases)
 [![Travis](https://img.shields.io/travis/comsave/safe-salesforce-saver-bundle)](https://travis-ci.org/comsave/safe-salesforce-saver-bundle)
