@@ -4,7 +4,6 @@ namespace Comsave\SafeSalesforceSaverBundle\Services;
 
 use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
 use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
-use Phpforce\SoapClient\Result\SaveResult;
 use Traversable;
 
 /**
@@ -40,27 +39,28 @@ class SafeSalesforceSaver
     }
 
     /**
-     * Use this function to save your model(s) to Salesforce and wait for the response.
+     * Use this function to save your model(s) to Salesforce and get the IDs set on your object(s).
      * @param $models mixed You can either pass a single object or an array of objects.
-     * @return mixed If you passed a single object this function will return your object with the inserted ID. If you passed multiple objects this function will return an array with your saved objects and their inserted IDs
      * @throws \Exception
      */
-    public function save($models)
+    public function save($models): void
     {
         $result = unserialize($this->rpcSaver->call(serialize($this->turnModelsIntoArray($models))));
 
         if (is_countable($models) && count($models) != 1) {
             $iterator = 0;
-            foreach($models as $model) {
-                if(!$model->getId()) {
+            foreach ($models as $model) {
+                if (!$model->getId()) {
                     $model->setId($result['created'][$iterator]->getId());
                     $iterator++;
                 }
             }
-            return $models;
+        } else {
+            if (is_iterable($models)) {
+                $models = $models[0];
+            }
+            $models->setId($result->getId());
         }
-
-        return $result;
     }
 
     /**
