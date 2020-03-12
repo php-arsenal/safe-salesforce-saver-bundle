@@ -64,7 +64,7 @@ class AsyncSfSaveConsumerTest extends TestCase
 
         $this->mappedBulkSaverMock->expects($this->exactly(2))
             ->method('save')
-            ->withConsecutive($object, $object2);
+            ->withConsecutive([$object], [$object2]);
 
         $this->mappedBulkSaverMock->expects($this->once())
             ->method('flush');
