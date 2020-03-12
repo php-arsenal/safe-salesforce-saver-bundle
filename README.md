@@ -1,6 +1,11 @@
 # SafeSalesforceSaver
 
+[![Release](https://img.shields.io/github/v/release/comsave/safe-salesforce-saver-bundle)](https://github.com/comsave/safe-salesforce-saver-bundle/releases)
+[![Travis](https://img.shields.io/travis/comsave/safe-salesforce-saver-bundle)](https://travis-ci.org/comsave/safe-salesforce-saver-bundle)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage/comsave/safe-salesforce-saver-bundle)](https://codeclimate.com/github/comsave/safe-salesforce-saver-bundle)
+
 ## About
+
 With this bundle you can stop worrying about your data getting lost when trying to save information to Salesforce. 
 The SafeSalesforceSaver will take the objects you give it and place them in a queue.
 The items are taken out of the queue one by one to prevent Salesforce from getting overwhelmed if you decide to save hundreds (or thoussands) of objects at once. 
@@ -33,6 +38,7 @@ public function registerBundles()
 ```
 
 ## Usage
+
 To get this bundle to work you will have to start the queues in your rabbit client. To do this you have to add the following configuration to your projects config.yml:
 ```yaml
 old_sound_rabbit_mq:
@@ -120,8 +126,3 @@ class ObjectSaver
 }
 ```
 
-
-
-[![Release](https://img.shields.io/github/v/release/comsave/safe-salesforce-saver-bundle)](https://github.com/comsave/safe-salesforce-saver-bundle/releases)
-[![Travis](https://img.shields.io/travis/comsave/safe-salesforce-saver-bundle)](https://travis-ci.org/comsave/safe-salesforce-saver-bundle)
-[![Test Coverage](https://img.shields.io/codeclimate/coverage/comsave/safe-salesforce-saver-bundle)](https://codeclimate.com/github/comsave/safe-salesforce-saver-bundle)
