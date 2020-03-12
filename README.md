@@ -1,12 +1,12 @@
 # SafeSalesforceSaver
 
-##About
+## About
 With this bundle you can stop worrying about your data getting lost when trying to save information to Salesforce. 
 The SafeSalesforceSaver will take the objects you give it and place them in a queue.
 The items are taken out of the queue one by one to prevent Salesforce from getting overwhelmed if you decide to save hundreds (or thoussands) of objects at once. 
 If an exception does occur during the save process, rabbit will simply retry the save a few moments later while logging the error away so you can debug what went wrong.
 
-##Installation
+## Installation
 
 `$ composer require comsave/safe-salesforce-saver-bundle`
 
@@ -32,7 +32,7 @@ public function registerBundles()
 }
 ```
 
-##Usage
+## Usage
 To get this bundle to work you will have to start the queues in your rabbit client. To do this you have to add the following configuration to your projects config.yml:
 ```yaml
 old_sound_rabbit_mq:

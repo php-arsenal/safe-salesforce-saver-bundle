@@ -40,6 +40,7 @@ class SafeSalesforceSaver
 
     /**
      * Use this function to save your model(s) to Salesforce and get the IDs set on your object(s).
+     * The IDs will only be set if your model has a public `setId` function.
      * @param $models mixed You can either pass a single object or an array of objects.
      * @throws \Exception
      */
@@ -50,7 +51,7 @@ class SafeSalesforceSaver
         if (is_countable($models) && count($models) != 1) {
             $iterator = 0;
             foreach ($models as $model) {
-                if (!$model->getId()) {
+                if (method_exists($model, 'getId') && !$model->getId() && method_exists($model, 'setId')) {
                     $model->setId($result['created'][$iterator]->getId());
                     $iterator++;
                 }
@@ -59,7 +60,9 @@ class SafeSalesforceSaver
             if (is_iterable($models)) {
                 $models = $models[0];
             }
-            $models->setId($result->getId());
+            if (method_exists($models, 'setId')) {
+                $models->setId($result->getId());
+            }
         }
     }
 

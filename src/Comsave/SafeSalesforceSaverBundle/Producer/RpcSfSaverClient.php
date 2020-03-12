@@ -13,9 +13,7 @@ use PhpAmqpLib\Exception\AMQPTimeoutException;
  */
 class RpcSfSaverClient
 {
-    /**
-     * @var RpcClient
-     */
+    /** @var RpcClient */
     private $rpcClient;
 
     /**
@@ -35,7 +33,7 @@ class RpcSfSaverClient
      */
     public function call($models): string
     {
-        $requestId = 'sss_' . crc32(microtime());
+        $requestId = 'sss_' . crc32($models);
         $this->rpcClient->addRequest($models, 'safe_salesforce_saver_server', $requestId, null, 50);
 
         try {

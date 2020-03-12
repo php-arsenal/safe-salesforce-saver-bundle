@@ -7,6 +7,7 @@ use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
 use Comsave\SafeSalesforceSaverBundle\Services\SafeSalesforceSaver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use tests\Model\TestModel;
 
 /**
  * Class SafeSalesforceSaverTest
@@ -75,6 +76,21 @@ class SafeSalesforceSaverTest extends TestCase
             ->with(serialize([$object]));
 
         $this->safeSalesforceSaver->save($object);
+    }
+
+    /**
+     * @covers ::save()
+     * @covers ::turnModelsIntoArray()
+     */
+    public function testSaveOneObjectAsArray()
+    {
+        $object = new \stdClass();
+
+        $this->rpcSaverMock->expects($this->once())
+            ->method('call')
+            ->with(serialize([$object]));
+
+        $this->safeSalesforceSaver->save([$object]);
     }
 
     /**

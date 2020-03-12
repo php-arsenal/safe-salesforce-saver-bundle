@@ -1,25 +1,26 @@
 <?php
 
-namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers;
+namespace tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers;
 
-use Comsave\SafeSalesforceSaverBundle\Consumers\AsyncSfSaveConsumer;
+use Comsave\SafeSalesforceSaverBundle\Consumers\SafeSalesforceSaverServer;
 use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use LogicItLab\Salesforce\MapperBundle\Mapper;
 use PhpAmqpLib\Message\AMQPMessage;
 use Phpforce\SoapClient\Exception\SaveException;
+use Phpforce\SoapClient\Result\SaveResult;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class AsyncSfSaveConsumerTest
+ * Class SafeSalesforceSaverServerTest
  * @package tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers
- * @coversDefaultClass \Comsave\SafeSalesforceSaverBundle\Consumers\AsyncSfSaveConsumer
+ * @coversDefaultClass \Comsave\SafeSalesforceSaverBundle\Consumers\SafeSalesforceSaverServer
  */
-class AsyncSfSaveConsumerTest extends TestCase
+class SafeSalesforceSaverServerTest extends TestCase
 {
-    /* @var AsyncSfSaveConsumer */
-    private $asyncSfSaveConsumer;
+    /* @var SafeSalesforceSaverServer */
+    private $SafeSalesforceSaverServer;
 
     /* @var Mapper|MockObject */
     private $mapperMock;
@@ -35,7 +36,7 @@ class AsyncSfSaveConsumerTest extends TestCase
         $this->mapperMock = $this->createMock(Mapper::class);
         $this->mappedBulkSaverMock = $this->createMock(MappedBulkSaver::class);
         $this->loggerMock = $this->createMock(LoggerInterface::class);
-        $this->asyncSfSaveConsumer = new AsyncSfSaveConsumer($this->mapperMock, $this->mappedBulkSaverMock, $this->loggerMock);
+        $this->SafeSalesforceSaverServer = new SafeSalesforceSaverServer($this->mapperMock, $this->mappedBulkSaverMock, $this->loggerMock);
     }
 
     /**
@@ -50,7 +51,9 @@ class AsyncSfSaveConsumerTest extends TestCase
             ->method('save')
             ->with($body);
 
-        $this->asyncSfSaveConsumer->execute($message);
+        $returnValue = $this->SafeSalesforceSaverServer->execute($message);
+
+        $this->assertEquals($returnValue, $body);
     }
 
     /**
@@ -66,10 +69,16 @@ class AsyncSfSaveConsumerTest extends TestCase
             ->method('save')
             ->withConsecutive($object, $object2);
 
-        $this->mappedBulkSaverMock->expects($this->once())
-            ->method('flush');
+        $saveResultMock1 = $this->createMock(SaveResult::class);
+        $saveResultMock2 = $this->createMock(SaveResult::class);
 
-        $this->asyncSfSaveConsumer->execute($message);
+        $this->mappedBulkSaverMock->expects($this->once())
+            ->method('flush')
+            ->willReturn([$saveResultMock1, $saveResultMock2]);
+
+        $returnValue = $this->SafeSalesforceSaverServer->execute($message);
+
+        $this->assertEquals($returnValue, [$saveResultMock1, $saveResultMock2]);
     }
 
     /**
@@ -92,6 +101,6 @@ class AsyncSfSaveConsumerTest extends TestCase
         $this->expectException(SaveException::class);
         $this->expectExceptionMessage('This is a test exception.');
 
-        $this->asyncSfSaveConsumer->execute($message);
+        $this->SafeSalesforceSaverServer->execute($message);
     }
 }
