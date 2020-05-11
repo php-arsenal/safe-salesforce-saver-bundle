@@ -8,8 +8,6 @@ services:
         resource: '../../*'
         exclude: '../../{DependencyInjection,Exception}'
 
-    old_sound_rabbit_mq.parallel_rpc: '@OldSound\RabbitMqBundle\RabbitMq\RpcClient'
-
     Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient:
         autowire: false
         arguments: ['@old_sound_rabbit_mq.parallel_rpc']
