@@ -96,7 +96,7 @@ class ObjectSaver
         $this->safeSalesforceSaver = $safeSalesforceSaver;
     }
 
-    // This way of saving will wait for the save result from Salesforce. This means that you can immediately access the newly inserted ID afterwards.
+    // This way of saving will wait for the save result from Salesforce. This means that you can immediately access the newly inserted ID after Salesforce saved the record.
     public function saveSingle(Object $object): string
     {
         $this->safeSalesforceSaver->save($object);
@@ -104,7 +104,7 @@ class ObjectSaver
         return $object->getId();
     }
     
-    // This function that you can save multiple objects at once. Simply put all the objects you want to save in an array and pass it to the SafeSalesforceSaver
+    // This function lets you save save multiple objects at once. Simply put all the objects you want to save in an array and pass it to the SafeSalesforceSaver. 
     public function saveMultiple(Object $object, Object $object2, Object $object3): array
     {
         $this->safeSalesforceSaver->save([$object, $object2, $object3]);
@@ -112,13 +112,13 @@ class ObjectSaver
         return [$object->getId(), $object2->getId(), $object3->getId()];
     }
 
-    // If you do not want to wait for the result you can simply put your object into the queue and continue with the rest of your code. This is recommended if you don't need the ID right away to save some time.
+    // If you do not want to wait for the result you can simply put your object into the queue and continue with the rest of your code. This is recommended if you don't need the ID or if you don't need a confirmation that the save succeeded.
     public function aSyncSaveSingle(Object $object): void
     {
         $this->safeSalesforceSaver->aSyncSave($object);
     }
 
-    // As with the other save function, it is also possible to quickly save multiple objects to Salesforce at once without waiting for the response.
+    // As with the other save function, it is also possible to save multiple objects to Salesforce at once without waiting for the response.
     public function aSyncSaveMultiple(Object $object, Object $object2, Object $object3): void
     {
         $this->safeSalesforceSaver->save([$object, $object2, $object3]);
