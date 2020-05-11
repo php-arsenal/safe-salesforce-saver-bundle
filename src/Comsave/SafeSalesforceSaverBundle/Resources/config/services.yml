@@ -9,6 +9,6 @@ services:
         exclude: '../../{DependencyInjection,Exception}'
 
     OldSound\RabbitMqBundle\RabbitMq\RpcClient:
-        autowire: true
+        arguments: ['%old_sound_rabbit_mq.connection.class%']
 
     Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer: '@old_sound_rabbit_mq.sss_async_processor_producer'
