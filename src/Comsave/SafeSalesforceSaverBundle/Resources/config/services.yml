@@ -10,8 +10,9 @@ services:
 
     old_sound_rabbit_mq.parallel_rpc: '@OldSound\RabbitMqBundle\RabbitMq\RpcClient'
 
-    OldSound\RabbitMqBundle\RabbitMq\RpcClient:
+    Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient:
         autowire: false
+        arguments: ['@old_sound_rabbit_mq.parallel_rpc']
 
     Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer: '@old_sound_rabbit_mq.sss_async_processor_producer'
 
