@@ -46,6 +46,10 @@ class RpcSfSaverClient
             throw new UnidentifiedMessageException($requestId, $models);
         }
 
+        if (gettype($reply[$requestId]) != 'string' ) {
+            return serialize($reply[$requestId]);
+        }
+
         return $reply[$requestId];
     }
 }
