@@ -2,6 +2,7 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Services;
 
+use Comsave\SafeSalesforceSaverBundle\Exception\SaveException;
 use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
 use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
 use Traversable;
@@ -46,23 +47,28 @@ class SafeSalesforceSaver
      */
     public function save($models): void
     {
-        $result = unserialize($this->rpcSaver->call(serialize($this->turnModelsIntoArray($models))));
+        $rawResult = $this->rpcSaver->call(serialize($this->turnModelsIntoArray($models)));
 
-        if (is_countable($models) && count($models) != 1) {
-            $iterator = 0;
-            foreach ($models as $model) {
-                if (method_exists($model, 'getId') && !$model->getId() && method_exists($model, 'setId')) {
-                    $model->setId($result['created'][$iterator]->getId());
-                    $iterator++;
+        if (@$result = unserialize($rawResult)) {
+
+            if (is_countable($models) && count($models) != 1) {
+                $iterator = 0;
+                foreach ($models as $model) {
+                    if (method_exists($model, 'getId') && !$model->getId() && method_exists($model, 'setId')) {
+                        $model->setId($result['created'][$iterator]->getId());
+                        $iterator++;
+                    }
+                }
+            } else {
+                if (is_iterable($models)) {
+                    $models = $models[0];
+                }
+                if (method_exists($models, 'setId')) {
+                    $models->setId($result->getId());
                 }
             }
         } else {
-            if (is_iterable($models)) {
-                $models = $models[0];
-            }
-            if (method_exists($models, 'setId')) {
-                $models->setId($result->getId());
-            }
+            throw new SaveException($rawResult);
         }
     }
 

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Services;
 
+use Comsave\SafeSalesforceSaverBundle\Exception\SaveException;
 use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
 use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
 use Comsave\SafeSalesforceSaverBundle\Services\SafeSalesforceSaver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use tests\Model\TestModel;
 
 /**
  * Class SafeSalesforceSaverTest
@@ -73,7 +73,8 @@ class SafeSalesforceSaverTest extends TestCase
 
         $this->rpcSaverMock->expects($this->once())
             ->method('call')
-            ->with(serialize([$object]));
+            ->with(serialize([$object]))
+            ->willReturn(serialize('testString'));
 
         $this->safeSalesforceSaver->save($object);
     }
@@ -88,7 +89,8 @@ class SafeSalesforceSaverTest extends TestCase
 
         $this->rpcSaverMock->expects($this->once())
             ->method('call')
-            ->with(serialize([$object]));
+            ->with(serialize([$object]))
+            ->willReturn(serialize('testString'));
 
         $this->safeSalesforceSaver->save([$object]);
     }
@@ -104,7 +106,27 @@ class SafeSalesforceSaverTest extends TestCase
 
         $this->rpcSaverMock->expects($this->once())
             ->method('call')
-            ->with(serialize([$object, $object2]));
+            ->with(serialize([$object, $object2]))
+            ->willReturn(serialize('testString'));
+
+        $this->safeSalesforceSaver->save([$object, $object2]);
+    }
+
+    /**
+     * @covers ::save()
+     * @covers ::turnModelsIntoArray()
+     */
+    public function testSaveThrowsExceptionWhenResultCanNotBeDeserialized()
+    {
+        $object = new \stdClass();
+        $object2 = new \stdClass();
+
+        $this->rpcSaverMock->expects($this->once())
+            ->method('call')
+            ->with(serialize([$object, $object2]))
+            ->willReturn('Salesforce Save Exception 1234');
+
+        $this->expectException(SaveException::class);
 
         $this->safeSalesforceSaver->save([$object, $object2]);
     }
