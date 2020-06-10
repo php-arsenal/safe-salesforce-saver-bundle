@@ -104,7 +104,7 @@ class ObjectSaver
         return $object->getId();
     }
     
-    // This function lets you save save multiple objects at once. Simply put all the objects you want to save in an array and pass it to the SafeSalesforceSaver. 
+    // This function lets you save multiple objects at once. Simply put all the objects you want to save in an array and pass it to the SafeSalesforceSaver. 
     public function saveMultiple(Object $object, Object $object2, Object $object3): array
     {
         $this->safeSalesforceSaver->save([$object, $object2, $object3]);
@@ -121,7 +121,7 @@ class ObjectSaver
     // As with the other save function, it is also possible to save multiple objects to Salesforce at once without waiting for the response.
     public function aSyncSaveMultiple(Object $object, Object $object2, Object $object3): void
     {
-        $this->safeSalesforceSaver->save([$object, $object2, $object3]);
+        $this->safeSalesforceSaver->aSyncSave([$object, $object2, $object3]);
     }
 }
 ```
