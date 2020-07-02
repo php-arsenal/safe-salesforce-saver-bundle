@@ -2,6 +2,7 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Services;
 
+use Comsave\SafeSalesforceSaverBundle\Exception\SaveException;
 use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
 use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
 use Traversable;
@@ -47,7 +48,17 @@ class SafeSalesforceSaver
     public function save($models): void
     {
         $rawResult = $this->rpcSaver->call(serialize($this->turnModelsIntoArray($models)));
-        @$result = unserialize($rawResult);
+        $result = false;
+
+        try {
+            $result = unserialize($rawResult);
+        }
+        catch(\Throwable $ex) {
+            if ($result === false) {
+                throw new SaveException('SafeSalesforceSaver - failed to unserialize: ' . $ex->getMessage());
+            }
+        }
+
         if ($result !== false && gettype($result) != 'string') {
 
             if (is_countable($models) && count($models) != 1) {

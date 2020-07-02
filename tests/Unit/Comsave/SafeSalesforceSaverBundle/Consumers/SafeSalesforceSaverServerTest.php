@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers;
+namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers;
 
 use Comsave\SafeSalesforceSaverBundle\Consumers\SafeSalesforceSaverServer;
 use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
@@ -87,19 +87,18 @@ class SafeSalesforceSaverServerTest extends TestCase
     public function testExecuteExceptionGetsLogged()
     {
         $body = new \stdClass();
-        $message = new AMQPMessage(serialize([$body]));
+        $serializedMessage = serialize([$body]);
+        $message = new AMQPMessage($serializedMessage);
+        $exception = new SaveException('This is a test exception.');
 
         $this->mapperMock->expects($this->once())
             ->method('save')
             ->with($body)
-            ->willThrowException(new SaveException('This is a test exception.'));
+            ->willThrowException($exception);
 
         $this->loggerMock->expects($this->once())
             ->method('error')
-            ->with('SafeSalesforceSaver - message: This is a test exception. - body: a:1:{i:0;O:8:"stdClass":0:{}}');
-
-        $this->expectException(SaveException::class);
-        $this->expectExceptionMessage('This is a test exception.');
+            ->with('SafeSalesforceSaver - message: This is a test exception. - body: ' . $serializedMessage);
 
         $this->SafeSalesforceSaverServer->execute($message);
     }

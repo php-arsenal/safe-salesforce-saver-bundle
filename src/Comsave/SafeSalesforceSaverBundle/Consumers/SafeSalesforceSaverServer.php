@@ -56,11 +56,12 @@ class SafeSalesforceSaverServer
                 $returnValue = $this->mappedBulkSaver->flush();
             }
         } catch (\Throwable $e) {
-            $this->logger->error('SafeSalesforceSaver - message: ' . $e->getMessage() . ' - body: ' . $message->body . ' - end of SafeSalesforceSaver message');
+            $this->logger->error('SafeSalesforceSaver - message: ' . $e->getMessage() . ' - body: ' . $message->body);
 
             if (strpos($e->getMessage(), 'unable to obtain exclusive access') !== false) {
                 throw $e;
             }
+
             $returnValue = serialize($e->getMessage());
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Unit\Comsave\SafeSalesforceSaverBundle\Producer;
+namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Producer;
 
 use Comsave\SafeSalesforceSaverBundle\Exception\TimeoutException;
 use Comsave\SafeSalesforceSaverBundle\Exception\UnidentifiedMessageException;
