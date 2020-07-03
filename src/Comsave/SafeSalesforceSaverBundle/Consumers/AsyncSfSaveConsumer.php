@@ -2,8 +2,8 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Consumers;
 
+use Comsave\SafeSalesforceSaverBundle\Factory\ExceptionMessageFactory;
 use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
-use LogicItLab\Salesforce\MapperBundle\Mapper;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
@@ -14,9 +14,6 @@ use Psr\Log\LoggerInterface;
  */
 class AsyncSfSaveConsumer implements ConsumerInterface
 {
-    /* @var Mapper */
-    private $mapper;
-
     /** @var MappedBulkSaver */
     private $mappedBulkSaver;
 
@@ -24,14 +21,12 @@ class AsyncSfSaveConsumer implements ConsumerInterface
     private $logger;
 
     /**
-     * @param Mapper $mapper
      * @param MappedBulkSaver $mappedBulkSaver
      * @param LoggerInterface $logger
      * @codeCoverageIgnore
      */
-    public function __construct(Mapper $mapper, MappedBulkSaver $mappedBulkSaver, LoggerInterface $logger)
+    public function __construct(MappedBulkSaver $mappedBulkSaver, LoggerInterface $logger)
     {
-        $this->mapper = $mapper;
         $this->mappedBulkSaver = $mappedBulkSaver;
         $this->logger = $logger;
     }
@@ -42,20 +37,36 @@ class AsyncSfSaveConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $message): void
     {
-        try {
-            $payload = unserialize($message->body);
+        $models = $this->unserializeModels($message);
 
-            if (count($payload) == 1) {
-                $this->mapper->save($payload[0]);
-            } else {
-                foreach ($payload as $model) {
-                    $this->mappedBulkSaver->save($model);
-                }
-                $this->mappedBulkSaver->flush();
+        try {
+            foreach ($models as $model) {
+                $this->mappedBulkSaver->save($model);
             }
-        } catch (\Throwable $e) {
-            $this->logger->error('SafeSalesforceSaver - message: '. $e->getMessage() . ' - body: ' . $message->body);
-            throw $e;
+
+            $this->mappedBulkSaver->flush();
+        } catch (\Throwable $ex) {
+            $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
+                'Failed to save to Salesforce',
+                $ex->getMessage(),
+                $message->body
+            ])));
+            throw $ex;
+        }
+    }
+
+    private function unserializeModels(AMQPMessage $message): array
+    {
+        try {
+            return unserialize($message->body);
+        }
+        catch (\Throwable $ex) {
+            $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
+                'Failed to unserialize message',
+                $ex->getMessage(),
+                $message->body
+            ])));
+            throw $ex;
         }
     }
 }
