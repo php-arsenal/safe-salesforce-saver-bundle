@@ -13,6 +13,8 @@ use PhpAmqpLib\Exception\AMQPTimeoutException;
  */
 class RpcSfSaverClient
 {
+    public const REQUEST_EXPIRATION = 50;
+
     /** @var RpcClient */
     private $rpcClient;
 
@@ -33,8 +35,15 @@ class RpcSfSaverClient
      */
     public function call($models): string
     {
-        $requestId = 'sss_' . crc32($models);
-        $this->rpcClient->addRequest($models, 'safe_salesforce_saver_server', $requestId, null, 50);
+        $requestId = $this->generateRequestId($models);
+
+        $this->rpcClient->addRequest(
+            $models,
+            'safe_salesforce_saver_server',
+            $requestId,
+            null,
+            static::REQUEST_EXPIRATION
+        );
 
         try {
             $reply = $this->rpcClient->getReplies();
@@ -46,10 +55,11 @@ class RpcSfSaverClient
             throw new UnidentifiedMessageException($requestId, $models);
         }
 
-        if (gettype($reply[$requestId]) != 'string' ) {
-            return serialize($reply[$requestId]);
-        }
-
         return $reply[$requestId];
+    }
+
+    private function generateRequestId($models): string
+    {
+        return sprintf('sss_%s', crc32($models));
     }
 }

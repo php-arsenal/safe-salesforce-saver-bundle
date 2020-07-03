@@ -19,7 +19,7 @@ class ModelSerializer
      */
     public function unserialize(string $serializedModels)
     {
-        return unserialize($serializedModels);
+        return $this->toArray(unserialize($serializedModels));
     }
 
     /**

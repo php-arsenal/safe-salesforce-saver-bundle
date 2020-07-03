@@ -3,6 +3,7 @@
 namespace Comsave\SafeSalesforceSaverBundle\Consumers;
 
 use Comsave\SafeSalesforceSaverBundle\Factory\ExceptionMessageFactory;
+use Comsave\SafeSalesforceSaverBundle\Services\ModelSerializer;
 use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -16,6 +17,9 @@ class AsyncSfSaveConsumer implements ConsumerInterface
 {
     /** @var MappedBulkSaver */
     private $mappedBulkSaver;
+
+    /** @var ModelSerializer */
+    private $modelSerializer;
 
     /** @var LoggerInterface */
     private $logger;
@@ -37,9 +41,14 @@ class AsyncSfSaveConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $message): void
     {
-        $models = $this->unserializeModels($message);
+        $this->logger->info(ExceptionMessageFactory::build($this, implode('. ', [
+            'Consuming',
+            $message->body
+        ])));
 
         try {
+            $models = $this->unserializeModels($message);
+
             foreach ($models as $model) {
                 $this->mappedBulkSaver->save($model);
             }
@@ -53,12 +62,17 @@ class AsyncSfSaveConsumer implements ConsumerInterface
             ])));
             throw $ex;
         }
+
+        $this->logger->info(ExceptionMessageFactory::build($this, implode('. ', [
+            'Consumed',
+            $message->body
+        ])));
     }
 
     private function unserializeModels(AMQPMessage $message): array
     {
         try {
-            return unserialize($message->body);
+            return $this->modelSerializer->unserialize($message->body);
         }
         catch (\Throwable $ex) {
             $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
