@@ -2,10 +2,8 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Services;
 
-use Comsave\SafeSalesforceSaverBundle\Exception\SaveException;
-use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
-use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
-use Traversable;
+use Comsave\SafeSalesforceSaverBundle\Services\SalesforceSaver\AsyncSalesforceSaver;
+use Comsave\SafeSalesforceSaverBundle\Services\SalesforceSaver\SyncSalesforceSaver;
 
 /**
  * Class SafeSalesforceSaver
@@ -13,21 +11,23 @@ use Traversable;
  */
 class SafeSalesforceSaver
 {
-    /** @var AsyncSfSaverProducer */
-    private $aSyncSaver;
+    /** @var AsyncSalesforceSaver */
+    private $asyncSalesforceSaver;
 
-    /** @var RpcSfSaverClient */
-    private $rpcSaver;
+    /** @var SyncSalesforceSaver */
+    private $syncSalesforceSaver;
 
     /**
-     * @param AsyncSfSaverProducer $aSyncSaver
-     * @param RpcSfSaverClient $rpcSaver
-     * @codeCoverageIgnore
+     * SafeSalesforceSaver constructor.
+     * @param AsyncSalesforceSaver $asyncSalesforceSaver
+     * @param SyncSalesforceSaver $syncSalesforceSaver
      */
-    public function __construct(AsyncSfSaverProducer $aSyncSaver, RpcSfSaverClient $rpcSaver)
-    {
-        $this->aSyncSaver = $aSyncSaver;
-        $this->rpcSaver = $rpcSaver;
+    public function __construct(
+        AsyncSalesforceSaver $asyncSalesforceSaver,
+        SyncSalesforceSaver $syncSalesforceSaver
+    ) {
+        $this->asyncSalesforceSaver = $asyncSalesforceSaver;
+        $this->syncSalesforceSaver = $syncSalesforceSaver;
     }
 
     /**
@@ -36,7 +36,7 @@ class SafeSalesforceSaver
      */
     public function aSyncSave($models): void
     {
-        $this->aSyncSaver->publish(serialize($this->turnModelsIntoArray($models)));
+        $this->asyncSalesforceSaver->save($models);
     }
 
     /**
@@ -47,56 +47,6 @@ class SafeSalesforceSaver
      */
     public function save($models): void
     {
-        $rawResult = $this->rpcSaver->call(serialize($this->turnModelsIntoArray($models)));
-        $result = false;
-
-        try {
-            $result = unserialize($rawResult);
-        }
-        catch(\Throwable $ex) {
-            if ($result === false) {
-                throw new SaveException('SafeSalesforceSaver - failed to unserialize: ' . $ex->getMessage());
-            }
-        }
-
-        if ($result !== false && gettype($result) != 'string') {
-
-            if (is_countable($models) && count($models) != 1) {
-                $iterator = 0;
-                foreach ($models as $model) {
-                    if (method_exists($model, 'getId') && !$model->getId() && method_exists($model, 'setId')) {
-                        $model->setId($result['created'][$iterator]->getId());
-                        $iterator++;
-                    }
-                }
-            } else {
-                if (is_iterable($models)) {
-                    $models = $models[0];
-                }
-                if (method_exists($models, 'setId')) {
-                    $models->setId($result->getId());
-                }
-            }
-        }
-    }
-
-    /**
-     * @param $models
-     * @return array
-     */
-    private function turnModelsIntoArray($models): array
-    {
-        if (is_array($models)) {
-            $modelsArray = $models;
-        } elseif ($models instanceof Traversable) {
-            $modelsArray = [];
-            foreach ($models as $m) {
-                $modelsArray[] = $m;
-            }
-        } else {
-            $modelsArray = [$models];
-        }
-
-        return $modelsArray;
+        $this->syncSalesforceSaver->save($models);
     }
 }

@@ -10,5 +10,4 @@ use OldSound\RabbitMqBundle\RabbitMq\Producer;
  */
 class AsyncSfSaverProducer extends Producer
 {
-
 }
