@@ -89,12 +89,18 @@ class SyncSalesforceSaver
         $models = is_array($models) ? array_values($models) : [$models];
 
         foreach($createdModels as $i => $createdModel) {
-            if (isset($models[$i])
-                && method_exists($createdModel, 'getId')
-                && !$models[$i]->getId()
-                && method_exists($models[$i], 'setId')) {
+            if (!isset($models[$i])) {
+                continue;
+            }
 
-                $models[$i]->setId($createdModel->getId());
+            $modelRef = new \ReflectionClass($models[$i]);
+            $idProp = $modelRef->getProperty('id');
+            $idProp->setAccessible(true);
+
+            if(method_exists($createdModel, 'getId')
+                && $modelRef->hasProperty('id')
+                && !$idProp->getValue($models[$i])) {
+                $idProp->setValue($models[$i], $createdModel->getId());
             }
         }
     }

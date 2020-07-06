@@ -47,20 +47,40 @@ class SyncSalesforceSaverTest extends TestCase
      */
     public function testSaveSingleModel(): void
     {
-        $models = new \stdClass();
-        $serializedModels = 'a:1:{i:0;O:8:"stdClass":0:{}}';
+        $model = new \stdClass();
+        $model->id = 1;
+        $models = $model;
+
+        $serializedModels = 'a:1:{i:0;O:8:"stdClass":1:{s:2:"id";N;}}';
 
         $this->modelSerializerMock->expects($this->once())
             ->method('serialize')
             ->with($models)
             ->willReturn($serializedModels);
 
+        $serializedSavedModels = 'a:1:{i:0;O:8:"stdClass":1:{s:2:"id";i:1;}}';
+
         $this->rpcClientMock->expects($this->once())
             ->method('call')
             ->with($serializedModels)
-            ->willReturn(serialize('testString'));
+            ->willReturn('a:1:{i:0;O:8:"stdClass":1:{s:2:"id";i:1;}}');
+
+        $this->rpcClientMock->expects($this->once())
+            ->method('call')
+            ->with($serializedModels)
+            ->willReturn($serializedSavedModels);
+
+        $savedModel = new \stdClass();
+        $savedModel->id = 1;
+        $savedModels = [$model];
+
+        $this->modelSerializerMock->expects($this->once())
+            ->method('unserialize')
+            ->with($serializedSavedModels)
+            ->willReturn($savedModels);
 
         $this->syncSalesforceSaver->save($models);
+        $this->assertEquals($model->id, 1);
     }
 
     /**
@@ -68,23 +88,40 @@ class SyncSalesforceSaverTest extends TestCase
      */
     public function testSaveMultipleModels(): void
     {
-        $models = [
-            new \stdClass(),
-            new \stdClass()
-        ];
-        $serializedModels = 'a:2:{i:0;O:8:"stdClass":0:{}i:1;O:8:"stdClass":0:{}}';
+        $model = new \stdClass();
+        $model->id = 1;
+        $model2 = new \stdClass();
+        $model2->id = 2;
+        $models = [$model, $model2];
+
+        $serializedModels = 'a:2:{i:0;O:8:"stdClass":1:{s:2:"id";N;}i:1;O:8:"stdClass":1:{s:2:"id";N;}}';
 
         $this->modelSerializerMock->expects($this->once())
             ->method('serialize')
             ->with($models)
             ->willReturn($serializedModels);
 
+        $serializedSavedModels = 'a:2:{i:0;O:8:"stdClass":1:{s:2:"id";i:1;}i:1;O:8:"stdClass":1:{s:2:"id";i:2;}}';
+
         $this->rpcClientMock->expects($this->once())
             ->method('call')
             ->with($serializedModels)
-            ->willReturn(serialize('testString2'));
+            ->willReturn($serializedSavedModels);
+
+        $savedModel = new \stdClass();
+        $savedModel->id = 1;
+        $savedModel2 = new \stdClass();
+        $savedModel2->id = 2;
+        $savedModels = [$model, $model2];
+
+        $this->modelSerializerMock->expects($this->once())
+            ->method('unserialize')
+            ->with($serializedSavedModels)
+            ->willReturn($savedModels);
 
         $this->syncSalesforceSaver->save($models);
+        $this->assertEquals($models[0]->id, 1);
+        $this->assertEquals($models[1]->id, 2);
     }
 
     /**
@@ -92,11 +129,13 @@ class SyncSalesforceSaverTest extends TestCase
      */
     public function testSaveThrowsExceptionWhenFailedToSave(): void
     {
-        $models = [
-            new \stdClass(),
-            new \stdClass(),
-        ];
-        $serializedModels = 'a:2:{i:0;O:8:"stdClass":0:{}i:1;O:8:"stdClass":0:{}}';
+        $model = new \stdClass();
+        $model->id = null;
+        $model2 = new \stdClass();
+        $model2->id = null;
+        $models = [$model, $model2];
+
+        $serializedModels = 'a:2:{i:0;O:8:"stdClass":1:{s:2:"id";N;}i:1;O:8:"stdClass":1:{s:2:"id";N;}}';
 
         $this->modelSerializerMock->expects($this->once())
             ->method('serialize')
