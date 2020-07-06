@@ -15,7 +15,6 @@ class RpcSfSaverClient
     private $rpcClient;
 
     /**
-     * @param RpcClient $rpcClient
      * @codeCoverageIgnore
      */
     public function __construct(RpcClient $rpcClient)

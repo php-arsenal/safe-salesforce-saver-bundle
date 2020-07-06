@@ -14,9 +14,7 @@ class SafeSalesforceSaver
     private $syncSalesforceSaver;
 
     /**
-     * SafeSalesforceSaver constructor.
-     * @param AsyncSalesforceSaver $asyncSalesforceSaver
-     * @param SyncSalesforceSaver $syncSalesforceSaver
+     * @codeCoverageIgnore
      */
     public function __construct(
         AsyncSalesforceSaver $asyncSalesforceSaver,

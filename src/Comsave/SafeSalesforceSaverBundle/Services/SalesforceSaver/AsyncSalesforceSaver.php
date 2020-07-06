@@ -19,10 +19,7 @@ class AsyncSalesforceSaver
     private $logger;
 
     /**
-     * AsyncSalesforceSaver constructor.
-     * @param AsyncSfSaverProducer $aSyncSaver
-     * @param ModelSerializer $modelSerializer
-     * @param LoggerInterface $logger
+     * @codeCoverageIgnore
      */
     public function __construct(
         AsyncSfSaverProducer $aSyncSaver,

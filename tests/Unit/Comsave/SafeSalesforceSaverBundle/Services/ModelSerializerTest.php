@@ -3,7 +3,6 @@
 namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Services;
 
 use Comsave\SafeSalesforceSaverBundle\Services\ModelSerializer;
-use LogicItLab\Salesforce\MapperBundle\Model\Opportunity;
 use PHPUnit\Framework\TestCase;
 
 /**

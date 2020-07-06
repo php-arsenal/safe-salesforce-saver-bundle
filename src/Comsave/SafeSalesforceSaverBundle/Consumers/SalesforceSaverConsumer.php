@@ -21,10 +21,7 @@ class SalesforceSaverConsumer implements ConsumerInterface
     private $logger;
 
     /**
-     * SafeSalesforceSaverServer constructor.
-     * @param MappedBulkSaver $mappedBulkSaver
-     * @param ModelSerializer $modelSerializer
-     * @param LoggerInterface $logger
+     * @codeCoverageIgnore
      */
     public function __construct(
         MappedBulkSaver $mappedBulkSaver,

@@ -19,10 +19,7 @@ class SyncSalesforceSaver
     private $logger;
 
     /**
-     * SyncSalesforceSaver constructor.
-     * @param RpcSfSaverClient $rpcClient
-     * @param ModelSerializer $modelSerializer
-     * @param LoggerInterface $logger
+     * @codeCoverageIgnore
      */
     public function __construct(RpcSfSaverClient $rpcClient, ModelSerializer $modelSerializer, LoggerInterface $logger)
     {
