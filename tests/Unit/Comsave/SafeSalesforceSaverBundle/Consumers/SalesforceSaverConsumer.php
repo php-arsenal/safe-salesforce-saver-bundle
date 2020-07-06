@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Class SafeSalesforceSaverServerTest
  * @package tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers
- * @coversDefaultClass \Comsave\SafeSalesforceSaverBundle\Consumers\SafeSalesforceSaverServer
+ * @coversDefaultClass \Comsave\SafeSalesforceSaverBundle\Consumers\SalesforceSaverConsumer
  */
 class SalesforceSaverConsumer extends TestCase
 {
