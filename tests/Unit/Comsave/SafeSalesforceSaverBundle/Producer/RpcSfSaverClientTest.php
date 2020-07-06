@@ -85,8 +85,6 @@ class RpcSfSaverClientTest extends TestCase
         $object2 = new \stdClass();
         $models = serialize([$object1, $object2]);
 
-//        $replyMock = ['invalidRequestId' => 123];
-
         $this->rpcClientMock->expects($this->once())
             ->method('addRequest');
         $this->rpcClientMock->expects($this->once())
