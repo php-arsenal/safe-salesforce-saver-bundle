@@ -15,9 +15,9 @@ class ModelSerializer
 
     /**
      * @param string
-     * @return object|object[]
+     * @return object[]
      */
-    public function unserialize(string $serializedModels)
+    public function unserialize(string $serializedModels): array
     {
         return $this->toArray(unserialize($serializedModels));
     }

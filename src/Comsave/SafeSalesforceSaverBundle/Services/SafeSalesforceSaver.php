@@ -5,10 +5,6 @@ namespace Comsave\SafeSalesforceSaverBundle\Services;
 use Comsave\SafeSalesforceSaverBundle\Services\SalesforceSaver\AsyncSalesforceSaver;
 use Comsave\SafeSalesforceSaverBundle\Services\SalesforceSaver\SyncSalesforceSaver;
 
-/**
- * Class SafeSalesforceSaver
- * @package Comsave\SafeSalesforceSaverBundle\Services
- */
 class SafeSalesforceSaver
 {
     /** @var AsyncSalesforceSaver */

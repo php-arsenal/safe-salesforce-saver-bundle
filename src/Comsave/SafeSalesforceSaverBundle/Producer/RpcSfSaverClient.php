@@ -7,10 +7,6 @@ use Comsave\SafeSalesforceSaverBundle\Exception\UnidentifiedMessageException;
 use OldSound\RabbitMqBundle\RabbitMq\RpcClient;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 
-/**
- * Class RpcSfSaverClient
- * @package Comsave\SafeSalesforceSaverBundle\Producer
- */
 class RpcSfSaverClient
 {
     public const REQUEST_EXPIRATION = 50;
@@ -27,39 +23,40 @@ class RpcSfSaverClient
         $this->rpcClient = $rpcClient;
     }
 
-    /**
-     * @param $models
-     * @return mixed
-     * @throws TimeoutException
-     * @throws UnidentifiedMessageException
-     */
-    public function call($models): string
+    public function call(string $serializedModels): string
     {
-        $requestId = $this->generateRequestId($models);
+        $requestId = $this->addRequest($serializedModels);
+
+        try {
+            $reply = $this->rpcClient->getReplies();
+        } catch (AMQPTimeoutException $e) {
+            throw new TimeoutException($serializedModels);
+        }
+
+        if (!isset($reply[$requestId])) {
+            throw new UnidentifiedMessageException($requestId, $serializedModels);
+        }
+
+        return $reply[$requestId];
+    }
+
+    private function addRequest(string $serializedModels): string
+    {
+        $requestId = $this->generateRequestId($serializedModels);
 
         $this->rpcClient->addRequest(
-            $models,
+            $serializedModels,
             'safe_salesforce_saver_server',
             $requestId,
             null,
             static::REQUEST_EXPIRATION
         );
 
-        try {
-            $reply = $this->rpcClient->getReplies();
-        } catch (AMQPTimeoutException $e) {
-            throw new TimeoutException($models);
-        }
-
-        if (!isset($reply[$requestId])) {
-            throw new UnidentifiedMessageException($requestId, $models);
-        }
-
-        return $reply[$requestId];
+        return $requestId;
     }
 
-    private function generateRequestId($models): string
+    private function generateRequestId(string $serializedModels): string
     {
-        return sprintf('sss_%s', crc32($models));
+        return sprintf('sss_%s', crc32($serializedModels));
     }
 }

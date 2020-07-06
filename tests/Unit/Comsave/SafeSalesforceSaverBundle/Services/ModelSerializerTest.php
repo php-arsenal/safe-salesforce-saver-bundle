@@ -31,32 +31,32 @@ class ModelSerializerTest extends TestCase
     /**
      * @covers ::serialize
      */
-    public function testSerializeMultipleModel(): void
+    public function testSerializeMultipleModels(): void
     {
         $this->assertEquals('a:2:{i:0;O:8:"stdClass":0:{}i:1;O:8:"stdClass":0:{}}', $this->modelSerializer->serialize([
             new \stdClass(),
-            new \stdClass()
+            new \stdClass(),
         ]));
     }
 
     /**
-     * @covers ::serialize
+     * @covers ::unserialize
      */
     public function testUnserializeSingleModel(): void
     {
         $this->assertEquals([
-            new \stdClass()
+            new \stdClass(),
         ], $this->modelSerializer->unserialize('a:1:{i:0;O:8:"stdClass":0:{}}'));
     }
 
     /**
-     * @covers ::serialize
+     * @covers ::unserialize
      */
-    public function testUnserializeMultipleModel(): void
+    public function testUnserializeMultipleModels(): void
     {
         $this->assertEquals([
             new \stdClass(),
-            new \stdClass()
+            new \stdClass(),
         ], $this->modelSerializer->unserialize('a:2:{i:0;O:8:"stdClass":0:{}i:1;O:8:"stdClass":0:{}}'));
     }
 }

@@ -6,6 +6,8 @@ use Comsave\SafeSalesforceSaverBundle\Exception\SaveException;
 use Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
 use Comsave\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
 use Comsave\SafeSalesforceSaverBundle\Services\SafeSalesforceSaver;
+use Comsave\SafeSalesforceSaverBundle\Services\SalesforceSaver\AsyncSalesforceSaver;
+use Comsave\SafeSalesforceSaverBundle\Services\SalesforceSaver\SyncSalesforceSaver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -19,115 +21,87 @@ class SafeSalesforceSaverTest extends TestCase
     /* @var SafeSalesforceSaver */
     private $safeSalesforceSaver;
 
-    /** @var AsyncSfSaverProducer|MockObject */
-    private $aSyncSaverMock;
+    /** @var AsyncSalesforceSaver|MockObject */
+    private $asyncSalesforceSaverMock;
 
-    /** @var RpcSfSaverClient|MockObject */
-    private $rpcSaverMock;
+    /** @var SyncSalesforceSaver|MockObject */
+    private $syncSalesforceSaverMock;
 
     public function setUp(): void
     {
-        $this->aSyncSaverMock = $this->createMock(AsyncSfSaverProducer::class);
-        $this->rpcSaverMock = $this->createMock(RpcSfSaverClient::class);
-        $this->safeSalesforceSaver = new SafeSalesforceSaver($this->aSyncSaverMock, $this->rpcSaverMock);
-    }
-
-    /**
-     * @covers ::aSyncSave()
-     * @covers ::turnModelsIntoArray()
-     */
-    public function testASyncSaveOneObject()
-    {
-        $object = new \stdClass();
-
-        $this->aSyncSaverMock->expects($this->once())
-            ->method('publish')
-            ->with(serialize([$object]));
-
-        $this->safeSalesforceSaver->aSyncSave($object);
-    }
-
-    /**
-     * @covers ::aSyncSave()
-     * @covers ::turnModelsIntoArray()
-     */
-    public function testASyncSaveMultipleObjects()
-    {
-        $object = new \stdClass();
-        $object2 = new \stdClass();
-
-        $this->aSyncSaverMock->expects($this->once())
-            ->method('publish')
-            ->with(serialize([$object, $object2]));
-
-        $this->safeSalesforceSaver->aSyncSave([$object, $object2]);
+        $this->asyncSalesforceSaverMock = $this->createMock(AsyncSalesforceSaver::class);
+        $this->syncSalesforceSaverMock = $this->createMock(SyncSalesforceSaver::class);
+        $this->safeSalesforceSaver = new SafeSalesforceSaver(
+            $this->asyncSalesforceSaverMock,
+            $this->syncSalesforceSaverMock
+        );
     }
 
     /**
      * @covers ::save()
-     * @covers ::turnModelsIntoArray()
      */
-    public function testSaveOneObject()
+    public function testAsyncSaveSingle(): void
     {
-        $object = new \stdClass();
+        $models = new \stdClass();
 
-        $this->rpcSaverMock->expects($this->once())
-            ->method('call')
-            ->with(serialize([$object]))
-            ->willReturn(serialize('testString'));
+        $this->asyncSalesforceSaverMock->expects($this->once())
+            ->method('save')
+            ->with($models);
 
-        $this->safeSalesforceSaver->save($object);
+        $this->syncSalesforceSaverMock->expects($this->never())
+            ->method('save');
+
+        $this->safeSalesforceSaver->aSyncSave($models);
     }
 
     /**
      * @covers ::save()
-     * @covers ::turnModelsIntoArray()
      */
-    public function testSaveOneObjectAsArray()
+    public function testAsyncSaveMultiple(): void
     {
-        $object = new \stdClass();
+        $models = [new \stdClass(), new \stdClass()];
 
-        $this->rpcSaverMock->expects($this->once())
-            ->method('call')
-            ->with(serialize([$object]))
-            ->willReturn(serialize('testString'));
+        $this->asyncSalesforceSaverMock->expects($this->once())
+            ->method('save')
+            ->with($models);
 
-        $this->safeSalesforceSaver->save([$object]);
+        $this->syncSalesforceSaverMock->expects($this->never())
+            ->method('save');
+
+        $this->safeSalesforceSaver->aSyncSave($models);
     }
 
     /**
      * @covers ::save()
-     * @covers ::turnModelsIntoArray()
      */
-    public function testSaveMultipleObjects()
+    public function testSyncSaveSingle(): void
     {
-        $object = new \stdClass();
-        $object2 = new \stdClass();
+        $models = new \stdClass();
 
-        $this->rpcSaverMock->expects($this->once())
-            ->method('call')
-            ->with(serialize([$object, $object2]))
-            ->willReturn(serialize('testString'));
+        $this->asyncSalesforceSaverMock->expects($this->never())
+            ->method('save');
 
-        $this->safeSalesforceSaver->save([$object, $object2]);
+        $this->syncSalesforceSaverMock->expects($this->once())
+            ->method('save')
+            ->with($models);
+
+        $this->safeSalesforceSaver->save($models);
     }
 
     /**
      * @covers ::save()
-     * @covers ::turnModelsIntoArray()
      */
-    public function testSaveThrowsExceptionWhenResultCanNotBeDeserialized()
+    public function testSyncSaveMultiple(): void
     {
-        $object = new \stdClass();
-        $object2 = new \stdClass();
+        $models = [new \stdClass(), new \stdClass()];
 
-        $this->rpcSaverMock->expects($this->once())
-            ->method('call')
-            ->with(serialize([$object, $object2]))
-            ->willReturn('Salesforce Save Exception 1234');
+        $this->asyncSalesforceSaverMock->expects($this->never())
+            ->method('save');
 
-        $this->expectException(SaveException::class);
+        $this->syncSalesforceSaverMock->expects($this->once())
+            ->method('save')
+            ->with($models);
 
-        $this->safeSalesforceSaver->save([$object, $object2]);
+        $this->safeSalesforceSaver->save($models);
     }
 }

@@ -35,7 +35,7 @@ class SyncSalesforceSaver
     {
         $serializedModels = $this->modelSerializer->serialize($models);
 
-        $this->logger->info(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
             'Saving',
             $serializedModels
         ])));
@@ -51,24 +51,28 @@ class SyncSalesforceSaver
             throw $ex;
         }
 
+        $unserializedSavedModels = $this->unserializeModels($savedSerializedModels);
+        $this->setCreatedModelIds($models, $unserializedSavedModels);
+
+        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+            'Saved',
+            $savedSerializedModels
+        ])));
+    }
+
+    private function unserializeModels(string $serializedModels): array
+    {
         try {
-            $unserializedSavedModels = $this->modelSerializer->unserialize($savedSerializedModels);
+            return $this->modelSerializer->unserialize($serializedModels);
         }
         catch (\Throwable $ex) {
             $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
                 'Failed to unserialize message',
                 $ex->getMessage(),
-                $savedSerializedModels
+                $serializedModels
             ])));
             throw $ex;
         }
-
-        $this->setModelIds($models, $unserializedSavedModels);
-
-        $this->logger->info(ExceptionMessageFactory::build($this, implode('. ', [
-            'Saved',
-            $this->modelSerializer->serialize($models)
-        ])));
     }
 
     /**
@@ -78,19 +82,19 @@ class SyncSalesforceSaver
      * @throws \Comsave\SafeSalesforceSaverBundle\Exception\UnidentifiedMessageException
      * @throws \Throwable
      */
-    public function setModelIds($models, $unserializedSavedModels): void
+    public function setCreatedModelIds($models, $unserializedSavedModels): void
     {
-        $createdModels = $unserializedSavedModels['created'] ?? [];
+        $createdModels = is_array($unserializedSavedModels) && isset($unserializedSavedModels['created']) ? $unserializedSavedModels['created'] : [];
         $createdModels = array_values($createdModels);
-        $models = is_array($models) ?: [$models];
+        $models = is_array($models) ? array_values($models) : [$models];
 
-        foreach($models as $i => $model) {
-            if (isset($createdModels[$i])
-                && method_exists($createdModels[$i], 'getId')
+        foreach($createdModels as $i => $createdModel) {
+            if (isset($models[$i])
+                && method_exists($createdModel, 'getId')
                 && !$models[$i]->getId()
                 && method_exists($models[$i], 'setId')) {
 
-                $models[$i]->setId($createdModels[$i]->getId());
+                $models[$i]->setId($createdModel->getId());
             }
         }
     }

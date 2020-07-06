@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 class AsyncSalesforceSaver
 {
     /** @var AsyncSfSaverProducer */
-    private $aSyncSaver;
+    private $aSyncSaverProducer;
 
     /** @var ModelSerializer */
     private $modelSerializer;
@@ -29,7 +29,7 @@ class AsyncSalesforceSaver
         ModelSerializer $modelSerializer,
         LoggerInterface $logger
     ) {
-        $this->aSyncSaver = $aSyncSaver;
+        $this->aSyncSaverProducer = $aSyncSaver;
         $this->modelSerializer = $modelSerializer;
         $this->logger = $logger;
     }
@@ -38,15 +38,15 @@ class AsyncSalesforceSaver
     {
         $serializedModels = $this->modelSerializer->serialize($models);
 
-        $this->logger->info(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
             'Scheduling for saving',
             $serializedModels
         ])));
 
-        $this->aSyncSaver->publish($serializedModels);
+        $this->aSyncSaverProducer->publish($serializedModels);
 
-        $this->logger->info(ExceptionMessageFactory::build($this, implode('. ', [
-            'Scheduled for saving successfully.',
+        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+            'Scheduled for saving successfully',
             $serializedModels
         ])));
     }

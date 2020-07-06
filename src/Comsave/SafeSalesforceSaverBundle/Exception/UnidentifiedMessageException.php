@@ -2,21 +2,10 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
-/**
- * Class UnidentifiedMessageException
- * @package Comsave\SafeSalesforceSaverBundle\Exception
- */
-class UnidentifiedMessageException extends SSSException
+class UnidentifiedMessageException extends SafeSalesforceSaverException
 {
-    protected $message;
-
-    /**
-     * @param string $requestId
-     * @param string $model
-     * @codeCoverageIgnore
-     */
     public function __construct(string $requestId, string $model)
     {
-        $this->message .= sprintf('No valid response was received from the rpc server. The requestId was \'%s\'. Serialized message of the failed call: %s', $requestId, $model);
+        parent::__construct(sprintf('No valid response was received from the rpc server. The requestId was \'%s\'. Serialized message of the failed call: %s', $requestId, $model));
     }
 }
