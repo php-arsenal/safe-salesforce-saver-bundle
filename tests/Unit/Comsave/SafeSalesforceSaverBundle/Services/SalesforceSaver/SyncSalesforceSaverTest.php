@@ -44,6 +44,8 @@ class SyncSalesforceSaverTest extends TestCase
 
     /**
      * @covers ::save()
+     * @covers ::unserializeModels()
+     * @covers ::setCreatedModelIds()
      */
     public function testSaveSingleModel(): void
     {
@@ -85,6 +87,8 @@ class SyncSalesforceSaverTest extends TestCase
 
     /**
      * @covers ::save()
+     * @covers ::unserializeModels()
+     * @covers ::setCreatedModelIds()
      */
     public function testSaveMultipleModels(): void
     {

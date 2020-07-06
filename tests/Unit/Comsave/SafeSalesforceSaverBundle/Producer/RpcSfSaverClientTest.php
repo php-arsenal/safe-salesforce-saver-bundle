@@ -30,6 +30,8 @@ class RpcSfSaverClientTest extends TestCase
 
     /**
      * @covers ::call()
+     * @covers ::addRequest()
+     * @covers ::generateRequestId()
      */
     public function testCall()
     {
@@ -50,6 +52,8 @@ class RpcSfSaverClientTest extends TestCase
 
     /**
      * @covers ::call()
+     * @covers ::addRequest()
+     * @covers ::generateRequestId()
      */
     public function testCallThrowsExceptionWhenRequestIdIsNotFound()
     {
@@ -72,6 +76,8 @@ class RpcSfSaverClientTest extends TestCase
 
     /**
      * @covers ::call()
+     * @covers ::addRequest()
+     * @covers ::generateRequestId()
      */
     public function testCallThrowsExceptionWhenRequestTimesOut()
     {

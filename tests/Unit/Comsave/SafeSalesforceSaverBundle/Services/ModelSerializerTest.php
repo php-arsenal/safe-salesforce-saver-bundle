@@ -22,6 +22,7 @@ class ModelSerializerTest extends TestCase
 
     /**
      * @covers ::serialize
+     * @covers ::toArray
      */
     public function testSerializeSingleModel(): void
     {
@@ -41,6 +42,7 @@ class ModelSerializerTest extends TestCase
 
     /**
      * @covers ::unserialize
+     * @covers ::toArray
      */
     public function testUnserializeSingleModel(): void
     {
@@ -51,6 +53,7 @@ class ModelSerializerTest extends TestCase
 
     /**
      * @covers ::unserialize
+     * @covers ::toArray
      */
     public function testUnserializeMultipleModels(): void
     {

@@ -38,7 +38,7 @@ class SafeSalesforceSaverTest extends TestCase
     }
 
     /**
-     * @covers ::save()
+     * @covers ::aSyncSave()
      */
     public function testAsyncSaveSingle(): void
     {
@@ -55,7 +55,7 @@ class SafeSalesforceSaverTest extends TestCase
     }
 
     /**
-     * @covers ::save()
+     * @covers ::aSyncSave()
      */
     public function testAsyncSaveMultiple(): void
     {
