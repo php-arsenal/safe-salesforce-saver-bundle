@@ -2,19 +2,13 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
-/**
- * Class SaveException
- * @package Comsave\SafeSalesforceSaverBundle\Exception
- */
-class SaveException extends SSSException
+class SaveException extends SafeSalesforceSaverException
 {
-    protected $message;
-
     /**
-     * @param string $error
+     * @codeCoverageIgnore
      */
     public function __construct(string $error)
     {
-        $this->message = sprintf('There was an error while saving to Salesforce:%s', $error);
+        parent::__construct(sprintf('There was an error while saving to Salesforce:%s', $error));
     }
 }

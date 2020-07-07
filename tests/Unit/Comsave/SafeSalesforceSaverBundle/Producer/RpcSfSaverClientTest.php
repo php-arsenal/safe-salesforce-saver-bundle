@@ -30,6 +30,8 @@ class RpcSfSaverClientTest extends TestCase
 
     /**
      * @covers ::call()
+     * @covers ::addRequest()
+     * @covers ::generateRequestId()
      */
     public function testCall()
     {
@@ -50,6 +52,8 @@ class RpcSfSaverClientTest extends TestCase
 
     /**
      * @covers ::call()
+     * @covers ::addRequest()
+     * @covers ::generateRequestId()
      */
     public function testCallThrowsExceptionWhenRequestIdIsNotFound()
     {
@@ -72,14 +76,14 @@ class RpcSfSaverClientTest extends TestCase
 
     /**
      * @covers ::call()
+     * @covers ::addRequest()
+     * @covers ::generateRequestId()
      */
     public function testCallThrowsExceptionWhenRequestTimesOut()
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
         $models = serialize([$object1, $object2]);
-
-        $replyMock = ['invalidRequestId' => 123];
 
         $this->rpcClientMock->expects($this->once())
             ->method('addRequest');

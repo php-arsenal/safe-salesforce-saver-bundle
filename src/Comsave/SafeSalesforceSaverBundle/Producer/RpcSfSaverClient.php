@@ -7,17 +7,14 @@ use Comsave\SafeSalesforceSaverBundle\Exception\UnidentifiedMessageException;
 use OldSound\RabbitMqBundle\RabbitMq\RpcClient;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 
-/**
- * Class RpcSfSaverClient
- * @package Comsave\SafeSalesforceSaverBundle\Producer
- */
 class RpcSfSaverClient
 {
+    public const REQUEST_EXPIRATION = 50;
+
     /** @var RpcClient */
     private $rpcClient;
 
     /**
-     * @param RpcClient $rpcClient
      * @codeCoverageIgnore
      */
     public function __construct(RpcClient $rpcClient)
@@ -25,31 +22,40 @@ class RpcSfSaverClient
         $this->rpcClient = $rpcClient;
     }
 
-    /**
-     * @param $models
-     * @return mixed
-     * @throws TimeoutException
-     * @throws UnidentifiedMessageException
-     */
-    public function call($models): string
+    public function call(string $serializedModels): string
     {
-        $requestId = 'sss_' . crc32($models);
-        $this->rpcClient->addRequest($models, 'safe_salesforce_saver_server', $requestId, null, 50);
+        $requestId = $this->addRequest($serializedModels);
 
         try {
             $reply = $this->rpcClient->getReplies();
         } catch (AMQPTimeoutException $e) {
-            throw new TimeoutException($models);
+            throw new TimeoutException($serializedModels);
         }
 
         if (!isset($reply[$requestId])) {
-            throw new UnidentifiedMessageException($requestId, $models);
-        }
-
-        if (gettype($reply[$requestId]) != 'string' ) {
-            return serialize($reply[$requestId]);
+            throw new UnidentifiedMessageException($requestId, $serializedModels);
         }
 
         return $reply[$requestId];
+    }
+
+    private function addRequest(string $serializedModels): string
+    {
+        $requestId = $this->generateRequestId($serializedModels);
+
+        $this->rpcClient->addRequest(
+            $serializedModels,
+            'safe_salesforce_saver_server',
+            $requestId,
+            null,
+            static::REQUEST_EXPIRATION
+        );
+
+        return $requestId;
+    }
+
+    private function generateRequestId(string $serializedModels): string
+    {
+        return sprintf('sss_%s', crc32($serializedModels));
     }
 }

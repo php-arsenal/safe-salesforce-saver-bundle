@@ -65,6 +65,7 @@ old_sound_rabbit_mq:
     rpc_clients:
         parallel:
             connection: default
+            expect_serialized_response: false
     rpc_servers:
         safe_salesforce_saver_server:
             connection: default

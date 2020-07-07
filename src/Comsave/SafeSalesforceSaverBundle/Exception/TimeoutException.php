@@ -2,19 +2,13 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
-/**
- * Class TimeoutException
- * @package Comsave\SafeSalesforceSaverBundle\Exception
- */
-class TimeoutException extends SSSException
+class TimeoutException extends SafeSalesforceSaverException
 {
-    protected $message;
-
     /**
-     * @param string $model
+     * @codeCoverageIgnore
      */
     public function __construct(string $model)
     {
-        $this->message = sprintf('The time limit expired while trying to save to Salesforce. Serialized message of the failed call: %s', $model);
+        parent::__construct(sprintf('The time limit expired while trying to save to Salesforce. Serialized message of the failed call: %s', $model));
     }
 }

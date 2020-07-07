@@ -2,11 +2,7 @@
 
 namespace Comsave\SafeSalesforceSaverBundle\Exception;
 
-/**
- * Class SSSException
- * @package Comsave\SafeSalesforceSaverBundle\Exception
- */
-class SSSException extends \Exception
+class SafeSalesforceSaverException extends \Exception
 {
     protected $model;
 
