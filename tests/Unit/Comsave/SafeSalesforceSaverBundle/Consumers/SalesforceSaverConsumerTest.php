@@ -2,11 +2,10 @@
 
 namespace Tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers;
 
-use Comsave\SafeSalesforceSaverBundle\Consumers\SafeSalesforceSaverServer;
+use Comsave\SafeSalesforceSaverBundle\Consumers\SalesforceSaverConsumer;
 use Comsave\SafeSalesforceSaverBundle\Services\ModelSerializer;
 use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use PhpAmqpLib\Message\AMQPMessage;
-use Phpforce\SoapClient\Exception\SaveException;
 use Phpforce\SoapClient\Result\SaveResult;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -17,10 +16,10 @@ use Psr\Log\LoggerInterface;
  * @package tests\Unit\Comsave\SafeSalesforceSaverBundle\Consumers
  * @coversDefaultClass \Comsave\SafeSalesforceSaverBundle\Consumers\SalesforceSaverConsumer
  */
-class SalesforceSaverConsumer extends TestCase
+class SalesforceSaverConsumerTest extends TestCase
 {
-    /* @var SafeSalesforceSaverServer */
-    private $safeSalesforceSaverServer;
+    /* @var SalesforceSaverConsumer */
+    private $salesforceSaverConsumer;
 
     /** @var MappedBulkSaver|MockObject */
     private $mappedBulkSaverMock;
@@ -36,7 +35,7 @@ class SalesforceSaverConsumer extends TestCase
         $this->mappedBulkSaverMock = $this->createMock(MappedBulkSaver::class);
         $this->modelSerializerMock = $this->createMock(ModelSerializer::class);
         $this->loggerMock = $this->createMock(LoggerInterface::class);
-        $this->safeSalesforceSaverServer = new SafeSalesforceSaverServer(
+        $this->salesforceSaverConsumer = new SalesforceSaverConsumer(
             $this->mappedBulkSaverMock,
             $this->modelSerializerMock,
             $this->loggerMock
@@ -68,7 +67,7 @@ class SalesforceSaverConsumer extends TestCase
             ->method('flush')
             ->willReturn($saveResultMocks);
 
-        $this->assertEquals($saveResultMocks, $this->safeSalesforceSaverServer->execute($message));
+        $this->assertEquals($saveResultMocks, $this->salesforceSaverConsumer->execute($message));
     }
 
     /**
@@ -103,7 +102,7 @@ class SalesforceSaverConsumer extends TestCase
             ->method('flush')
             ->willReturn($saveResultMocks);
 
-        $this->assertEquals($saveResultMocks, $this->safeSalesforceSaverServer->execute($message));
+        $this->assertEquals($saveResultMocks, $this->salesforceSaverConsumer->execute($message));
     }
 
     /**
@@ -114,16 +113,19 @@ class SalesforceSaverConsumer extends TestCase
         $serializedModels = 'a:1:{i:0;O:8:"stdClass":0:{}}';
         $message = new AMQPMessage($serializedModels);
 
+        $exception = new \Exception('This is a test exception');
+
         $this->modelSerializerMock->expects($this->once())
             ->method('unserialize')
             ->with($message->body)
-            ->willThrowException(new SaveException('This is a test exception'))
-            ->willReturn([]);
+            ->willThrowException($exception);
 
         $this->loggerMock->expects($this->once())
             ->method('error')
-            ->with('SafeSalesforceSaver. In `SafeSalesforceSaverServer` occured `Failed to unserialize message. This is a test exception. a:1:{i:0;O:8:"stdClass":0:{}}`.');
+            ->with('SafeSalesforceSaver. In `SalesforceSaverConsumer` occured `Failed to unserialize message. This is a test exception. a:1:{i:0;O:8:"stdClass":0:{}}`.');
 
-        $this->safeSalesforceSaverServer->execute($message);
+        $this->expectExceptionMessage($exception->getMessage());
+
+        $this->salesforceSaverConsumer->execute($message);
     }
 }
