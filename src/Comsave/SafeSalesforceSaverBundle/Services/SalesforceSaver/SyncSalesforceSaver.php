@@ -32,29 +32,29 @@ class SyncSalesforceSaver
     {
         $serializedModels = $this->modelSerializer->serialize($models);
 
-        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, [
             'Saving',
             $serializedModels
-        ])));
+        ]));
 
         try {
             $savedSerializedModels = $this->rpcClient->call($serializedModels);
         } catch (\Throwable $ex) {
-            $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
+            $this->logger->error(ExceptionMessageFactory::build($this, [
                 'Failed to save to Salesforce',
                 $ex->getMessage(),
                 $serializedModels
-            ])));
+            ]));
             throw $ex;
         }
 
         $unserializedSavedModels = $this->unserializeModels($savedSerializedModels);
         $this->setCreatedModelIds($models, $unserializedSavedModels);
 
-        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, [
             'Saved',
             $savedSerializedModels
-        ])));
+        ]));
     }
 
     private function unserializeModels(string $serializedModels): array
@@ -63,11 +63,11 @@ class SyncSalesforceSaver
             return $this->modelSerializer->unserialize($serializedModels);
         }
         catch (\Throwable $ex) {
-            $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
+            $this->logger->error(ExceptionMessageFactory::build($this, [
                 'Failed to unserialize message',
                 $ex->getMessage(),
                 $serializedModels
-            ])));
+            ]));
             throw $ex;
         }
     }

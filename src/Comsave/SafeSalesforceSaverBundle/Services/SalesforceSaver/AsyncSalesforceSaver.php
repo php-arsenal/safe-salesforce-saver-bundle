@@ -35,16 +35,16 @@ class AsyncSalesforceSaver
     {
         $serializedModels = $this->modelSerializer->serialize($models);
 
-        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, [
             'Scheduling for saving',
             $serializedModels
-        ])));
+        ]));
 
         $this->aSyncSaverProducer->publish($serializedModels);
 
-        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, [
             'Scheduled for saving successfully',
             $serializedModels
-        ])));
+        ]));
     }
 }

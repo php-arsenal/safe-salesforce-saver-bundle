@@ -40,10 +40,10 @@ class SalesforceSaverConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $message)
     {
-        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, [
             'Consuming',
             $message->body
-        ])));
+        ]));
 
         $models = $this->unserializeModels($message);
 
@@ -54,11 +54,11 @@ class SalesforceSaverConsumer implements ConsumerInterface
 
             $result = $this->mappedBulkSaver->flush();
         } catch (\Throwable $ex) {
-            $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
+            $this->logger->error(ExceptionMessageFactory::build($this, [
                 'Failed to save to Salesforce',
                 $ex->getMessage(),
                 $message->body
-            ])));
+            ]));
 
             if(strpos($ex->getMessage(), 'org is locked') === false
             && strpos($ex->getMessage(), 'unable to obtain exclusive access') === false) {
@@ -66,10 +66,10 @@ class SalesforceSaverConsumer implements ConsumerInterface
             }
         }
 
-        $this->logger->debug(ExceptionMessageFactory::build($this, implode('. ', [
+        $this->logger->debug(ExceptionMessageFactory::build($this, [
             'Consumed',
             $message->body
-        ])));
+        ]));
 
         return $result;
     }
@@ -80,11 +80,11 @@ class SalesforceSaverConsumer implements ConsumerInterface
             return $this->modelSerializer->unserialize($message->body);
         }
         catch (\Throwable $ex) {
-            $this->logger->error(ExceptionMessageFactory::build($this, implode('. ', [
+            $this->logger->error(ExceptionMessageFactory::build($this, [
                 'Failed to unserialize message',
                 $ex->getMessage(),
                 $message->body
-            ])));
+            ]));
             throw $ex;
         }
     }
