@@ -60,8 +60,8 @@ class SalesforceSaverConsumer implements ConsumerInterface
                 $message->body
             ])));
 
-            if(!strpos($ex->getMessage(), 'org is locked')
-            && !strpos($ex->getMessage(), 'unable to obtain exclusive access')) {
+            if(strpos($ex->getMessage(), 'org is locked') === false
+            && strpos($ex->getMessage(), 'unable to obtain exclusive access') === false) {
                 throw $ex;
             }
         }
