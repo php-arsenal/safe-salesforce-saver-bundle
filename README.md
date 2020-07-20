@@ -34,7 +34,6 @@ Or (Symfony 4.0 and higher) in your `config/bundles.php`:
 return [
      Comsave\SafeSalesforceSaverBundle\ComsaveSafeSalesforceSaverBundle::class => ['all' => true],
 ];
-}
 ```
 
 ## Usage
