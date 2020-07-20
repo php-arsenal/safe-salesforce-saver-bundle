@@ -22,19 +22,18 @@ public function registerBundles()
 {
     $bundles = [
         new Comsave\SafeSalesforceSaverBundle\ComsaveSafeSalesforceSaverBundle(),
-    [;
+    ];
+
+    return $bundles;
 }
 ```
 
 Or (Symfony 4.0 and higher) in your `config/bundles.php`:
 
 ```php
-public function registerBundles()
-{
-    $bundles = [
-         Comsave\SafeSalesforceSaverBundle\ComsaveSafeSalesforceSaverBundle::class => ['all' => true],
-    ];
-}
+return [
+     Comsave\SafeSalesforceSaverBundle\ComsaveSafeSalesforceSaverBundle::class => ['all' => true],
+];
 ```
 
 ## Usage
