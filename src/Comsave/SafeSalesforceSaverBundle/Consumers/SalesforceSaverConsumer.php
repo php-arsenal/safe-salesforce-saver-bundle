@@ -40,6 +40,7 @@ class SalesforceSaverConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $message)
     {
+        $result = [];
         $this->logger->debug(ExceptionMessageFactory::build($this, [
             'Consuming',
             $message->body
@@ -60,8 +61,7 @@ class SalesforceSaverConsumer implements ConsumerInterface
                 $message->body
             ]));
 
-            if(strpos($ex->getMessage(), 'org is locked') === false
-            && strpos($ex->getMessage(), 'unable to obtain exclusive access') === false) {
+            if($this->shouldRequeue($ex)) {
                 throw $ex;
             }
         }
@@ -87,5 +87,11 @@ class SalesforceSaverConsumer implements ConsumerInterface
             ]));
             throw $ex;
         }
+    }
+
+    public function shouldRequeue(\Exception $exception): bool
+    {
+        return (strpos($exception->getMessage(), 'org is locked') !== false
+            || strpos($exception->getMessage(), 'unable to obtain exclusive access') !== false);
     }
 }

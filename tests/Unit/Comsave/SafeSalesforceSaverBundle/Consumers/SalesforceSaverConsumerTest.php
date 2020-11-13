@@ -128,4 +128,23 @@ class SalesforceSaverConsumerTest extends TestCase
 
         $this->salesforceSaverConsumer->execute($message);
     }
+
+    public function exceptionProvider()
+    {
+        return [
+            ['Mandatory field \'name__c\' is missing.', false],
+            ['Save failed. org is locked.', true],
+            ['unable to obtain exclusive access to object 12345.', true],
+        ];
+    }
+
+    /**
+     * @dataProvider exceptionProvider()
+     * @covers ::shouldRequeue()
+     */
+    public function testShouldRequeue($message, $expected)
+    {
+        $exception = new \Exception($message);
+        $this->assertEquals($expected, $this->salesforceSaverConsumer->shouldRequeue($exception));
+    }
 }
