@@ -135,6 +135,7 @@ class SalesforceSaverConsumerTest extends TestCase
             ['Mandatory field \'name__c\' is missing.', false],
             ['Save failed. org is locked.', true],
             ['unable to obtain exclusive access to object 12345.', true],
+            ['Http Error 1234. Error Fetching http headers.', true],
         ];
     }
 

@@ -89,9 +89,10 @@ class SalesforceSaverConsumer implements ConsumerInterface
         }
     }
 
-    public function shouldRequeue(\Exception $exception): bool
+    public function shouldRequeue(\Throwable $exception): bool
     {
         return (strpos($exception->getMessage(), 'org is locked') !== false
+            || strpos($exception->getMessage(), 'Error Fetching http headers') !== false
             || strpos($exception->getMessage(), 'unable to obtain exclusive access') !== false);
     }
 }
