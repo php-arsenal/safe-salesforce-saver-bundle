@@ -1,12 +1,12 @@
 {
-    "name": "comsave/safe-salesforce-saver-bundle",
+    "name": "php-arsenal/safe-salesforce-saver-bundle",
     "type": "symfony-bundle",
     "description": "Allows you to save your objects to Salesforce safely",
-    "homepage": "https://github.com/comsave/safe-salesforce-saver-bundle",
+    "homepage": "https://github.com/php-arsenal/safe-salesforce-saver-bundle",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Comsave\\": "src/Comsave"
+            "PhpArsenal\\": "src/PhpArsenal"
         }
     },
     "autoload-dev": {
@@ -18,7 +18,7 @@
         "php": ">=7.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "comsave/salesforce-mapper-bundle": "^3.5",
+        "php-arsenal/salesforce-mapper-bundle": "^3.5",
         "php-amqplib/rabbitmq-bundle": "^1.14",
         "symfony/config": "^3.4|^4.3",
         "symfony/console": "^3.4|^4.3",

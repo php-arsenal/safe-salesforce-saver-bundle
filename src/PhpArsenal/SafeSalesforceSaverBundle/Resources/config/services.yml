@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    PhpArsenal\SafeSalesforceSaverBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Exception}'
+
+    PhpArsenal\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer: '@old_sound_rabbit_mq.sss_async_processor_producer'
+
+    PhpArsenal\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient:
+        autowire: false
+        arguments: ['@old_sound_rabbit_mq.parallel_rpc']

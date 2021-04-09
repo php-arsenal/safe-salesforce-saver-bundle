@@ -1,8 +1,8 @@
 # SafeSalesforceSaver
 
-[![Release](https://img.shields.io/github/v/release/comsave/safe-salesforce-saver-bundle)](https://github.com/comsave/safe-salesforce-saver-bundle/releases)
-[![Travis](https://img.shields.io/travis/comsave/safe-salesforce-saver-bundle)](https://travis-ci.org/comsave/safe-salesforce-saver-bundle)
-[![Test Coverage](https://img.shields.io/codeclimate/coverage/comsave/safe-salesforce-saver-bundle)](https://codeclimate.com/github/comsave/safe-salesforce-saver-bundle)
+[![Release](https://img.shields.io/github/v/release/php-arsenal/safe-salesforce-saver-bundle)](https://github.com/php-arsenal/safe-salesforce-saver-bundle/releases)
+[![Travis](https://img.shields.io/travis/php-arsenal/safe-salesforce-saver-bundle)](https://travis-ci.org/php-arsenal/safe-salesforce-saver-bundle)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage/php-arsenal/safe-salesforce-saver-bundle)](https://codeclimate.com/github/php-arsenal/safe-salesforce-saver-bundle)
 
 ## About
 
@@ -13,7 +13,7 @@ If an exception does occur during the save process, rabbit will simply retry the
 
 ## Installation
 
-`$ composer require comsave/safe-salesforce-saver-bundle`
+`$ composer require php-arsenal/safe-salesforce-saver-bundle`
 
 Depending on your Symfony version you either have to register the bundle in `app/AppKernel.php` (Symfony 3.4 and lower):
 
@@ -21,7 +21,7 @@ Depending on your Symfony version you either have to register the bundle in `app
 public function registerBundles()
 {
     $bundles = [
-        new Comsave\SafeSalesforceSaverBundle\ComsaveSafeSalesforceSaverBundle(),
+        new PhpArsenal\SafeSalesforceSaverBundle\PhpArsenalSafeSalesforceSaverBundle(),
     ];
 
     return $bundles;
@@ -32,7 +32,7 @@ Or (Symfony 4.0 and higher) in your `config/bundles.php`:
 
 ```php
 return [
-     Comsave\SafeSalesforceSaverBundle\ComsaveSafeSalesforceSaverBundle::class => ['all' => true],
+     PhpArsenal\SafeSalesforceSaverBundle\PhpArsenalSafeSalesforceSaverBundle::class => ['all' => true],
 ];
 ```
 
@@ -43,7 +43,7 @@ To get this bundle to work you will have to start the queues in your rabbit clie
 old_sound_rabbit_mq:
     producers:
         sss_async_processor:
-            class: Comsave\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer
+            class: PhpArsenal\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer
             connection: default
             exchange_options:
                 name: 'sss_async_queue'
@@ -60,7 +60,7 @@ old_sound_rabbit_mq:
                 prefetch_size: 0
                 prefetch_count: 1
                 global: false
-            callback: Comsave\SafeSalesforceSaverBundle\Consumers\AsyncSfSaveConsumer
+            callback: PhpArsenal\SafeSalesforceSaverBundle\Consumers\AsyncSfSaveConsumer
     rpc_clients:
         parallel:
             connection: default
@@ -68,20 +68,20 @@ old_sound_rabbit_mq:
     rpc_servers:
         safe_salesforce_saver_server:
             connection: default
-            callback: Comsave\SafeSalesforceSaverBundle\Consumers\SafeSalesforceSaverServer
+            callback: PhpArsenal\SafeSalesforceSaverBundle\Consumers\SafeSalesforceSaverServer
             qos_options: { prefetch_size: 0, prefetch_count: 1, global: false }
             queue_options: { name: sss_rpc_queue, durable: true, auto_delete: false }
 ```
 It is important that you do not change the names of the queues as this could lead to issues. 
 The above configuration assumes that you already have the default configuration for rabbitMQ set up. If not, please refer to the readme file of the [rabbit bundle on github](https://github.com/php-amqplib/RabbitMqBundle).
 
-In order to actually save your objects to Salesforce they have to be annotated in the right way. See [the mapper bundle on github](https://github.com/comsave/salesforce-mapper-bundle).
+In order to actually save your objects to Salesforce they have to be annotated in the right way. See [the mapper bundle on github](https://github.com/php-arsenal/salesforce-mapper-bundle).
 
 When you have updated your configuration and models you can save them in two different ways. Synchronous or a-synchronous:
 ```php
 <?php
 
-use Comsave\SafeSalesforceSaverBundle\Services\SafeSalesforceSaver;
+use PhpArsenal\SafeSalesforceSaverBundle\Services\SafeSalesforceSaver;
 
 class ObjectSaver
 {
