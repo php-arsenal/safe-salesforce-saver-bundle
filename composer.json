@@ -33,11 +33,7 @@
     "scripts": {
         "run-tests": "vendor/bin/phpunit -c phpunit.xml.dist --no-coverage",
         "run-coverage": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover tests/_output/coverage.xml",
-        "run-coverage-text": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-text=tests/_output/coverage.txt && cat tests/_output/coverage.txt",
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        }
+        "run-coverage-text": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-text=tests/_output/coverage.txt && cat tests/_output/coverage.txt"
     },
     "extra": {
         "symfony": {
