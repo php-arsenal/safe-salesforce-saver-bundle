@@ -4,9 +4,9 @@ namespace Tests\Unit\Consumers;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Consumers\SalesforceSaverConsumer;
 use PhpArsenal\SafeSalesforceSaverBundle\Services\ModelSerializer;
-use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use PhpAmqpLib\Message\AMQPMessage;
-use Phpforce\SoapClient\Result\SaveResult;
+use PhpArsenal\SalesforceMapperBundle\MappedBulkSaver;
+use PhpArsenal\SoapClient\Result\SaveResult;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

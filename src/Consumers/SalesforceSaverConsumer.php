@@ -4,9 +4,9 @@ namespace PhpArsenal\SafeSalesforceSaverBundle\Consumers;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Factory\ExceptionMessageFactory;
 use PhpArsenal\SafeSalesforceSaverBundle\Services\ModelSerializer;
-use LogicItLab\Salesforce\MapperBundle\MappedBulkSaver;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use PhpArsenal\SalesforceMapperBundle\MappedBulkSaver;
 use Psr\Log\LoggerInterface;
 
 class SalesforceSaverConsumer implements ConsumerInterface
