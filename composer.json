@@ -21,11 +21,8 @@
         "php-amqplib/rabbitmq-bundle": "^2.6",
         "php-arsenal/salesforce-mapper-bundle": "^4.0",
         "symfony/config": "^5.2",
-        "symfony/console": "^5.2",
         "symfony/dependency-injection": "^5.2",
         "symfony/dotenv": "^5.2",
-        "symfony/flex": "^1.12",
-        "symfony/framework-bundle": "^5.2",
         "symfony/http-kernel": "^5.2",
         "symfony/yaml": "^5.2"
     },
@@ -36,7 +33,11 @@
     "scripts": {
         "run-tests": "vendor/bin/phpunit -c phpunit.xml.dist --no-coverage",
         "run-coverage": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover tests/_output/coverage.xml",
-        "run-coverage-text": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-text=tests/_output/coverage.txt && cat tests/_output/coverage.txt"
+        "run-coverage-text": "vendor/bin/phpunit -c phpunit.xml.dist --coverage-text=tests/_output/coverage.txt && cat tests/_output/coverage.txt",
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        }
     },
     "extra": {
         "symfony": {
