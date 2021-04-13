@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Services\SalesforceSaver;
+namespace Tests\Unit\Services\SalesforceSaver;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Exception\SaveException;
 use PhpArsenal\SafeSalesforceSaverBundle\Producer\RpcSfSaverClient;
@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class SyncSalesforceSaverTest
- * @package Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Services\SalesforceSaver
+ * @package Tests\Unit\Services\SalesforceSaver
  * @coversDefaultClass \PhpArsenal\SafeSalesforceSaverBundle\Services\SalesforceSaver\SyncSalesforceSaver
  */
 class SyncSalesforceSaverTest extends TestCase

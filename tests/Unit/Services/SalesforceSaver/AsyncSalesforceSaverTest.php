@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Services\SalesforceSaver;
+namespace Tests\Unit\Services\SalesforceSaver;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;
 use PhpArsenal\SafeSalesforceSaverBundle\Services\ModelSerializer;
@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class AsyncSalesforceSaverTest
- * @package Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Services\SalesforceSaver
+ * @package Tests\Unit\Services\SalesforceSaver
  * @coversDefaultClass \PhpArsenal\SafeSalesforceSaverBundle\Services\SalesforceSaver\AsyncSalesforceSaver
  */
 class AsyncSalesforceSaverTest extends TestCase

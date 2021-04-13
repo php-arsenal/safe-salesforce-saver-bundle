@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Consumers;
+namespace Tests\Unit\Consumers;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Consumers\SalesforceSaverConsumer;
 use PhpArsenal\SafeSalesforceSaverBundle\Services\ModelSerializer;

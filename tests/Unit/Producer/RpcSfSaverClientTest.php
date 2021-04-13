@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Producer;
+namespace Tests\Unit\Producer;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Exception\TimeoutException;
 use PhpArsenal\SafeSalesforceSaverBundle\Exception\UnidentifiedMessageException;

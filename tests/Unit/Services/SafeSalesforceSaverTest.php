@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Services;
+namespace Tests\Unit\Services;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Exception\SaveException;
 use PhpArsenal\SafeSalesforceSaverBundle\Producer\AsyncSfSaverProducer;

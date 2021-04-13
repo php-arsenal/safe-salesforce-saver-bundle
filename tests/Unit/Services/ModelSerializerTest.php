@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Services;
+namespace Tests\Unit\Services;
 
 use PhpArsenal\SafeSalesforceSaverBundle\Services\ModelSerializer;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class ModelSerializerTest
- * @package Tests\Unit\PhpArsenal\SafeSalesforceSaverBundle\Services
+ * @package Tests\Unit\Services
  * @coversDefaultClass \PhpArsenal\SafeSalesforceSaverBundle\Services\ModelSerializer
  */
 class ModelSerializerTest extends TestCase

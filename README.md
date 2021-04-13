@@ -21,7 +21,7 @@ Depending on your Symfony version you either have to register the bundle in `app
 public function registerBundles()
 {
     $bundles = [
-        new PhpArsenal\SafeSalesforceSaverBundle\PhpArsenalSafeSalesforceSaverBundle(),
+        new PhpArsenal\SafeSalesforceSaverBundle\SafeSalesforceSaverBundle(),
     ];
 
     return $bundles;
@@ -32,7 +32,7 @@ Or (Symfony 4.0 and higher) in your `config/bundles.php`:
 
 ```php
 return [
-     PhpArsenal\SafeSalesforceSaverBundle\PhpArsenalSafeSalesforceSaverBundle::class => ['all' => true],
+     PhpArsenal\SafeSalesforceSaverBundle\SafeSalesforceSaverBundle::class => ['all' => true],
 ];
 ```
 

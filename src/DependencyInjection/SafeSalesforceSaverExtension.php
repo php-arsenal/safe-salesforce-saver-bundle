@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader;
  * Class PhpArsenalSafeSalesforceSaverExtension
  * @package PhpArsenal\SafeSalesforceSaverBundle\DependencyInjection
  */
-class PhpArsenalSafeSalesforceSaverExtension extends Extension
+class SafeSalesforceSaverExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
