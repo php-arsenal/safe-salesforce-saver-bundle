@@ -1,8 +1,8 @@
 # SafeSalesforceSaver
 
 [![Release](https://img.shields.io/github/v/release/php-arsenal/safe-salesforce-saver-bundle)](https://github.com/php-arsenal/safe-salesforce-saver-bundle/releases)
-[![Travis](https://img.shields.io/travis/php-arsenal/safe-salesforce-saver-bundle)](https://travis-ci.com/php-arsenal/safe-salesforce-saver-bundle)
-[![Test Coverage](https://img.shields.io/codeclimate/coverage/php-arsenal/safe-salesforce-saver-bundle)](https://codeclimate.com/github/php-arsenal/safe-salesforce-saver-bundle)
+[![CI](https://img.shields.io/github/workflow/status/php-arsenal/safe-salesforce-saver-bundle/CI)](https://github.com/php-arsenal/safe-salesforce-saver-bundle/actions/workflows/ci.yml)
+[![Packagist](https://img.shields.io/packagist/dt/php-arsenal/safe-salesforce-saver-bundle)](https://packagist.org/packages/php-arsenal/safe-salesforce-saver-bundle)
 
 ## About
 
